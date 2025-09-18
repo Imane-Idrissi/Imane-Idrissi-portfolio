@@ -1,0 +1,152 @@
+import React from 'react';
+import styled from 'styled-components';
+import { Button } from '../components/common/Button';
+
+const ProjectsContainer = styled.div`
+  min-height: calc(100vh - 70px);
+  padding: ${({ theme }) => theme.spacing.xxl} 0;
+`;
+
+const ProjectsContent = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${({ theme }) => theme.spacing.md};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 0 ${({ theme }) => theme.spacing.sm};
+  }
+`;
+
+const PageTitle = styled.h1`
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: ${({ theme }) => theme.spacing.xxl};
+  color: ${({ theme }) => theme.colors.text};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 2.5rem;
+  }
+`;
+
+const ProjectGrid = styled.div`
+  display: grid;
+  gap: ${({ theme }) => theme.spacing.xxl};
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const ProjectCard = styled.div`
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  padding: ${({ theme }) => theme.spacing.xl};
+  border: 3px solid ${({ theme }) => theme.colors.primary};
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px ${({ theme }) => theme.colors.shadow};
+  }
+`;
+
+const ProjectImage = styled.div`
+  position: relative;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  overflow: hidden;
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  box-shadow: 0 4px 12px ${({ theme }) => theme.colors.shadow};
+  height: 400px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+  }
+`;
+
+const ProjectContent = styled.div`
+  text-align: center;
+`;
+
+const ProjectTitle = styled.h2`
+  font-size: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing.md};
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const ProjectDescription = styled.p`
+  font-size: 1.125rem;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  line-height: 1.6;
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  text-align: justify;
+`;
+
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.md};
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  
+  button {
+    flex: 1;
+    width: 100%;
+  }
+`;
+
+export const Projects: React.FC = () => {
+  return (
+    <ProjectsContainer>
+      <ProjectsContent>
+        <PageTitle>My Projects</PageTitle>
+        
+        <ProjectGrid>
+          <ProjectCard>
+            <ProjectContent>
+              <ProjectTitle>Collab App</ProjectTitle>
+            </ProjectContent>
+            <ProjectImage>
+              <img src="/home-images/collab-app-home.png" alt="Collab App Homepage" />
+            </ProjectImage>
+            <ProjectContent>
+              <ProjectDescription>
+                A comprehensive collaborative platform featuring real-time task management, 
+                AI-powered task extraction, and distributed system architecture. Built with 
+                modern technologies for scalable team collaboration.
+              </ProjectDescription>
+              <ButtonGroup>
+                <Button variant="primary" size="lg">
+                  View Project →
+                </Button>
+              </ButtonGroup>
+            </ProjectContent>
+          </ProjectCard>
+
+          <ProjectCard>
+            <ProjectContent>
+              <ProjectTitle>Style App</ProjectTitle>
+            </ProjectContent>
+            <ProjectImage>
+              <img src="/home-images/e-commerce-home.png" alt="Style App Homepage" />
+            </ProjectImage>
+            <ProjectContent>
+              <ProjectDescription>
+                A modern e-commerce platform with elegant design and smooth user experience. 
+                Features include product catalog, shopping cart, secure checkout, and 
+                comprehensive admin dashboard for inventory management.
+              </ProjectDescription>
+              <ButtonGroup>
+                <Button variant="primary" size="lg">
+                  View Project →
+                </Button>
+              </ButtonGroup>
+            </ProjectContent>
+          </ProjectCard>
+        </ProjectGrid>
+      </ProjectsContent>
+    </ProjectsContainer>
+  );
+};
