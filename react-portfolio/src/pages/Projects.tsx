@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
 
 const ProjectsContainer = styled.div`
@@ -98,6 +99,8 @@ const ButtonGroup = styled.div`
 `;
 
 export const Projects: React.FC = () => {
+  const navigate = useNavigate();
+  
   return (
     <ProjectsContainer>
       <ProjectsContent>
@@ -118,7 +121,11 @@ export const Projects: React.FC = () => {
                 modern technologies for scalable team collaboration.
               </ProjectDescription>
               <ButtonGroup>
-                <Button variant="primary" size="lg">
+                <Button 
+                  variant="primary" 
+                  size="lg"
+                  onClick={() => navigate('/projects/collab-app')}
+                >
                   View Project →
                 </Button>
               </ButtonGroup>

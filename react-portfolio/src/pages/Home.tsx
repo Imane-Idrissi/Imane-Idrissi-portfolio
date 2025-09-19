@@ -208,16 +208,20 @@ export const Home: React.FC = () => {
               <img src="/task-board-images/edit-modal.png" alt="Task editing interface" />
             </FeatureImage>
             <FeatureDescription>
-              Experience seamless collaboration with our advanced task editing system. 
-              Built for teams that need instant updates and smooth workflows.
+              Most systems lock users out during simultaneous editing, creating frustration and workflow disruptions. 
+              I built a two-layer conflict resolution system that turns potential conflicts into collaborative opportunities.
             </FeatureDescription>
             <BenefitsList>
-              <BenefitItem>Instant real-time synchronization</BenefitItem>
-              <BenefitItem>Intuitive drag-and-drop interface</BenefitItem>
-              <BenefitItem>Advanced permission controls</BenefitItem>
-              <BenefitItem>Optimistic UI for lightning-fast responses</BenefitItem>
+              <BenefitItem>Floating chat prevents conflicts before they happen</BenefitItem>
+              <BenefitItem>Real-time presence detection and coordination</BenefitItem>
+              <BenefitItem>Optimistic UI with intelligent rollback mechanisms</BenefitItem>
+              <BenefitItem>Transforms blocking into collaboration opportunities</BenefitItem>
             </BenefitsList>
-            <Button variant="primary" size="md">
+            <Button 
+              variant="primary" 
+              size="md"
+              onClick={() => navigate('/projects/collab-app?section=modals&highlight=deep-dive')}
+            >
               View Case Study →
             </Button>
           </FeatureCard>
