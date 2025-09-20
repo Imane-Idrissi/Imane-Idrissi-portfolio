@@ -163,7 +163,7 @@ export const Footer: React.FC = () => {
         </ContactInfo>
         
         <Copyright>
-          © 2024 Imane Idrissi. Made with love 💜
+          © {new Date().getFullYear()} Imane Idrissi. Made with love 💜
         </Copyright>
       </FooterContent>
       

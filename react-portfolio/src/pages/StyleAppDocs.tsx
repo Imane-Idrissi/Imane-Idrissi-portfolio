@@ -5,7 +5,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import styled from 'styled-components';
 
-// Import existing styled components from your original file
+// Import existing styled components from CollabAppDocs
 const PageContainer = styled.div`
   display: flex;
   min-height: 100vh;
@@ -75,21 +75,21 @@ const RightSidebarTitle = styled.h3`
   padding-bottom: ${({ theme }) => theme.spacing.sm};
 `;
 
-const TocItemLink = styled.a<{ level: number }>`
+const TocItemLink = styled.a<{ $level: number }>`
   display: block;
   padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
   margin-bottom: ${({ theme }) => theme.spacing.xs};
   color: ${({ theme }) => theme.colors.textSecondary};
   text-decoration: none;
-  font-size: ${({ level }) => level === 2 ? '0.95rem' : '0.85rem'};
-  font-weight: ${({ level }) => level === 2 ? '600' : '500'};
+  font-size: ${({ $level }) => $level === 2 ? '0.95rem' : '0.85rem'};
+  font-weight: ${({ $level }) => $level === 2 ? '600' : '500'};
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  margin-left: ${({ level }) => (level - 2) * 16}px;
+  margin-left: ${({ $level }) => ($level - 2) * 16}px;
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
-  border-left: ${({ level }) => level > 2 ? '2px solid #e5e7eb' : 'none'};
-  padding-left: ${({ level }) => level > 2 ? '16px' : '12px'};
+  border-left: ${({ $level }) => $level > 2 ? '2px solid #e5e7eb' : 'none'};
+  padding-left: ${({ $level }) => $level > 2 ? '16px' : '12px'};
   line-height: 1.4;
   word-wrap: break-word;
   hyphens: auto;
@@ -187,7 +187,7 @@ const NavItem = styled.button<{ $active?: boolean }>`
   }
 `;
 
-// Styled markdown container that matches your existing design
+// Styled markdown container
 const MarkdownContainer = styled.div`
   max-width: 900px;
   
@@ -199,15 +199,15 @@ const MarkdownContainer = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    line-height: 1.2;
   }
 
   h2 {
     font-size: 2rem;
-    margin-bottom: ${({ theme }) => theme.spacing.xl};
+    margin-bottom: ${({ theme }) => theme.spacing.md};
     margin-top: ${({ theme }) => theme.spacing.xl};
     color: ${({ theme }) => theme.colors.text};
-    border-bottom: 2px solid ${({ theme }) => theme.colors.border};
-    padding-bottom: ${({ theme }) => theme.spacing.sm};
+    font-weight: 700;
   }
 
   h3 {
@@ -230,15 +230,14 @@ const MarkdownContainer = styled.div`
 
   li {
     line-height: 1.7;
+    margin-bottom: ${({ theme }) => theme.spacing.xs};
     color: ${({ theme }) => theme.colors.textSecondary};
-    margin-bottom: ${({ theme }) => theme.spacing.sm};
   }
 
   code {
     background-color: ${({ theme }) => theme.colors.surface};
-    border: 1px solid ${({ theme }) => theme.colors.border};
-    border-radius: ${({ theme }) => theme.borderRadius.sm};
     padding: 2px 6px;
+    border-radius: 4px;
     font-family: ${({ theme }) => theme.fonts.mono};
     font-size: 0.9em;
   }
@@ -255,13 +254,9 @@ const MarkdownContainer = styled.div`
 
   pre code {
     background: none;
-    border: none;
     padding: 0;
-  }
-
-  strong {
-    color: ${({ theme }) => theme.colors.primary};
-    font-weight: 600;
+    border-radius: 0;
+    font-size: 0.85em;
   }
 
   blockquote {
@@ -277,23 +272,20 @@ const MarkdownContainer = styled.div`
     max-width: 100%;
     height: auto;
     border-radius: ${({ theme }) => theme.borderRadius.lg};
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     margin: ${({ theme }) => theme.spacing.lg} 0;
   }
 
-  em {
-    color: ${({ theme }) => theme.colors.textSecondary};
-    margin-top: ${({ theme }) => theme.spacing.sm};
-    display: block;
-    text-align: center;
-    font-style: italic;
-  }
+  a {
+    color: ${({ theme }) => theme.colors.primary};
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
 
-  hr {
-    border: none;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, ${({ theme }) => theme.colors.border}, transparent);
-    margin: ${({ theme }) => theme.spacing.xxl} 0;
+    &:hover {
+      border-bottom-color: ${({ theme }) => theme.colors.primary};
+    }
   }
 
   table {
@@ -314,11 +306,45 @@ const MarkdownContainer = styled.div`
   }
 `;
 
+const VideoContainer = styled.div`
+  margin: ${({ theme }) => theme.spacing.xl} 0;
+  text-align: center;
+`;
+
+const StyledVideo = styled.video`
+  width: 100%;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  margin-bottom: ${({ theme }) => theme.spacing.md};
+`;
+
+const VideoCaption = styled.p`
+  font-style: italic;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.9rem;
+  margin: 0;
+`;
+
+const PageTitle = styled.h1`
+  font-size: 2.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
+  font-weight: 800;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  text-align: center;
+  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
+  padding-bottom: ${({ theme }) => theme.spacing.lg};
+`;
+
 const LoadingSpinner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 400px;
+  height: 200px;
   
   &::after {
     content: '';
@@ -336,81 +362,7 @@ const LoadingSpinner = styled.div`
   }
 `;
 
-type DocType = 'overview' | 'task-board' | 'chat-app';
-
-type TaskBoardSection = 'intro' | 'functional-requirements' | 'modals' | 'cap-theorem' | 
-              'implementation' | 'optimistic-ui' | 'caching' | 'concurrency' | 'performance' | 'lessons';
-
-type ChatAppSection = 'intro' | 'ai-extraction' | 'websocket-architecture' | 'lessons';
-
-type OverviewSection = 'intro';
-
-type Section = TaskBoardSection | ChatAppSection | OverviewSection;
-
-const taskBoardNavigation = [
-  { id: 'intro' as TaskBoardSection, title: 'Introduction', anchor: '#introduction' },
-  { id: 'functional-requirements' as TaskBoardSection, title: 'Functional Requirements', anchor: '#functional-requirements-what-users-can-do' },
-  { id: 'modals' as TaskBoardSection, title: 'UI Modals', anchor: '#ui-modals' },
-  { id: 'cap-theorem' as TaskBoardSection, title: 'CAP Theorem Trade-offs', anchor: '#cap-theorem-trade-offs-theory-meets-reality' },
-  { id: 'implementation' as TaskBoardSection, title: 'Implementation Strategies', anchor: '#implementation-strategies-from-theory-to-code' },
-  { id: 'optimistic-ui' as TaskBoardSection, title: 'Optimistic UI Updates', anchor: '#deep-dive-optimistic-ui-updates' },
-  { id: 'caching' as TaskBoardSection, title: 'Caching Layer', anchor: '#deep-dive-caching-layer' },
-  { id: 'concurrency' as TaskBoardSection, title: 'Concurrency Control', anchor: '#concurrency-control-when-to-lock-vs-when-to-flow' },
-  { id: 'performance' as TaskBoardSection, title: 'Performance & Monitoring', anchor: '#performance-targets-monitoring' },
-  { id: 'lessons' as TaskBoardSection, title: 'Lessons Learned', anchor: '#real-world-impact-lessons-learned' }
-];
-
-const chatAppNavigation = [
-  { id: 'intro' as ChatAppSection, title: 'Introduction', anchor: '#introduction' },
-  { id: 'ai-extraction' as ChatAppSection, title: 'AI Task Extraction', anchor: '#ai-task-extraction-from-conversation-to-action' },
-  { id: 'websocket-architecture' as ChatAppSection, title: 'Message Ordering (HLC)', anchor: '#message-ordering-challenge-in-a-distributed-chat' }
-];
-
-const overviewNavigation = [
-  { id: 'intro' as OverviewSection, title: 'Introduction', anchor: '#introduction' }
-];
-
-const DocSwitcher = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-  padding: 8px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(29, 78, 216, 0.05) 100%);
-  border-radius: ${({ theme }) => theme.borderRadius.xl};
-  border: 1px solid rgba(59, 130, 246, 0.15);
-  width: 100%;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.08);
-  backdrop-filter: blur(10px);
-`;
-
-const DocTypeButton = styled.button<{ $active: boolean }>`
-  width: 100%;
-  padding: 10px 16px;
-  background: ${({ $active }) => 
-    $active 
-      ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' 
-      : 'transparent'
-  };
-  color: ${({ theme, $active }) => $active ? 'white' : theme.colors.text};
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: ${({ $active }) => $active ? '600' : '500'};
-  transition: all 0.3s ease;
-  text-align: left;
-  min-width: 0;
-
-  &:hover {
-    background: ${({ $active }) => 
-      $active 
-        ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' 
-        : 'rgba(59, 130, 246, 0.1)'
-    };
-    transform: translateX(2px);
-  }
-`;
+type StyleAppSection = 'intro' | 'inventory-management';
 
 interface TocItem {
   id: string;
@@ -418,11 +370,15 @@ interface TocItem {
   level: number;
 }
 
-export const CollabAppDocs: React.FC = () => {
+const styleAppNavigation = [
+  { id: 'intro' as StyleAppSection, title: 'Introduction', anchor: '#introduction' },
+  { id: 'inventory-management' as StyleAppSection, title: 'Advanced Inventory Management', anchor: '#advanced-inventory-management' }
+];
+
+export const StyleAppDocs: React.FC = () => {
   const location = useLocation();
-  const [currentDocType, setCurrentDocType] = useState<DocType>('overview');
-  const [activeSection, setActiveSection] = useState<Section>('intro');
-  const [sections, setSections] = useState<Record<Section, string>>({} as Record<Section, string>);
+  const [activeSection, setActiveSection] = useState<StyleAppSection>('intro');
+  const [sections, setSections] = useState<Record<StyleAppSection, string>>({} as Record<StyleAppSection, string>);
   const [currentSectionToc, setCurrentSectionToc] = useState<TocItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -437,100 +393,69 @@ export const CollabAppDocs: React.FC = () => {
         const level = headerMatch[1].length;
         const title = headerMatch[2];
         const id = title.toLowerCase()
-          .replace(/[^\w\s-]/g, '')
+          .replace(/[^a-z0-9\s-]/g, '')
           .replace(/\s+/g, '-')
           .trim();
         
-        tocItems.push({
-          id,
-          title,
-          level
-        });
+        tocItems.push({ id, title, level });
       }
     });
     
     return tocItems;
   };
 
-  const splitMarkdownIntoSections = (content: string): Record<Section, string> => {
-    const sectionMap: Record<Section, string> = {} as Record<Section, string>;
-    
-    // Split by ## headers (main sections)
-    const parts = content.split(/(?=^## )/m);
-    
-    // The first part is the title and introduction
-    // Check if second part is the walkthrough section (for chat app docs)
-    let introPart = parts[0] + (parts[1] || '');
-    let startIndex = 2;
-    
-    // If the third part exists and contains "What You'll Discover", include it in intro
-    if (parts[2] && parts[2].toLowerCase().includes("what you'll discover")) {
-      introPart += parts[2];
-      startIndex = 3;
-    }
-    
-    sectionMap['intro'] = introPart;
-    
-    // Map the other sections
-    for (let i = startIndex; i < parts.length; i++) {
-      const part = parts[i];
-      const headerMatch = part.match(/^## (.+)/);
+  // Split markdown into sections based on main headings
+  const splitMarkdownIntoSections = (content: string): Record<StyleAppSection, string> => {
+    const lines = content.split('\n');
+    const sectionMap: Record<string, string> = {};
+    let currentSection = 'intro';
+    let currentContent: string[] = [];
+
+    lines.forEach((line, index) => {
+      // Check for main section headers (##)
+      const headerMatch = line.match(/^##\s+(.+)/);
+      
       if (headerMatch) {
-        const title = headerMatch[1].toLowerCase();
-        
-        // Task Board sections
-        if (title.includes('functional requirements')) {
-          sectionMap['functional-requirements'] = part;
-        } else if (title.includes('hidden ui features') || title.includes('modal system') || title.includes('ui modals')) {
-          sectionMap['modals'] = part;
-        } else if (title.includes('cap theorem')) {
-          sectionMap['cap-theorem'] = part;
-        } else if (title.includes('implementation strategies')) {
-          sectionMap['implementation'] = part;
-        } else if (title.includes('deep dive') && title.includes('optimistic')) {
-          sectionMap['optimistic-ui'] = part;
-        } else if (title.includes('deep dive') && title.includes('caching')) {
-          sectionMap['caching'] = part;
-        } else if (title.includes('concurrency control')) {
-          sectionMap['concurrency'] = part;
+        // Save previous section
+        if (currentContent.length > 0) {
+          sectionMap[currentSection] = currentContent.join('\n').trim();
         }
-        // Chat App sections
-        else if (title.includes('ai task extraction')) {
-          sectionMap['ai-extraction'] = part;
-        } else if (title.includes('websocket') || title.includes('real-time')) {
-          sectionMap['websocket-architecture'] = part;
+        
+        // Start new section
+        const title = headerMatch[1].toLowerCase();
+        if (title.includes('advanced inventory management')) {
+          currentSection = 'inventory-management';
+        } else if (title.includes('introduction')) {
+          currentSection = 'intro';
         }
         // Common sections
-        else if (title.includes('performance')) {
-          sectionMap['performance'] = part;
-        } else if (title.includes('real-world impact') || title.includes('lessons learned')) {
-          sectionMap['lessons'] = part;
+        else if (title.includes('lessons')) {
+          currentSection = 'lessons';
         }
+        
+        currentContent = [line];
+      } else {
+        currentContent.push(line);
       }
+    });
+
+    // Don't forget the last section
+    if (currentContent.length > 0) {
+      sectionMap[currentSection] = currentContent.join('\n').trim();
     }
-    
-    return sectionMap;
+
+    return sectionMap as Record<StyleAppSection, string>;
   };
 
   useEffect(() => {
     const loadMarkdownContent = async () => {
       try {
-        console.log('Attempting to load markdown content for:', currentDocType);
-        // Load from public folder with cache busting
-        let filename: string;
-        if (currentDocType === 'task-board') {
-          filename = 'task-board-documentation.md';
-        } else if (currentDocType === 'chat-app') {
-          filename = 'chat-app-documentation.md';
-        } else {
-          filename = 'overview-documentation.md';
-        }
-        const response = await fetch(`/${filename}?t=${Date.now()}`);
+        console.log('Loading Style app documentation...');
+        const response = await fetch(`/style-app-documentation.md?t=${Date.now()}`);
         console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers.get('content-type'));
         
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
         const content = await response.text();
@@ -545,7 +470,7 @@ export const CollabAppDocs: React.FC = () => {
         setSections(sectionsMap);
         console.log('Sections split:', Object.keys(sectionsMap));
         
-        // Reset to intro section when changing doc type
+        // Reset to intro section
         setActiveSection('intro');
       } catch (error) {
         console.error('Error loading markdown content:', error);
@@ -555,24 +480,24 @@ export const CollabAppDocs: React.FC = () => {
 **Issue:** ${errorMessage}
 
 Please check that:
-1. The file \`${currentDocType}-documentation.md\` exists in the public folder
+1. The file \`style-app-documentation.md\` exists in the public folder
 2. The React development server is running properly
 3. There are no routing conflicts
 
 **Debug Info:**
 - Current URL: ${window.location.href}
-- Attempting to fetch: /${currentDocType}-documentation.md`;
+- Attempting to fetch: /style-app-documentation.md`;
         
-        setSections({ 'intro': errorContent } as Record<Section, string>);
+        setSections({ 'intro': errorContent } as Record<StyleAppSection, string>);
       } finally {
         setLoading(false);
       }
     };
 
     loadMarkdownContent();
-  }, [currentDocType]);
+  }, []);
 
-  const handleSectionClick = (sectionId: Section) => {
+  const handleSectionClick = (sectionId: StyleAppSection) => {
     setActiveSection(sectionId);
     // Update table of contents for the new section
     const sectionContent = sections[sectionId] || '';
@@ -583,9 +508,7 @@ Please check that:
   const scrollToHeading = (headingId: string) => {
     const element = document.getElementById(headingId);
     if (element) {
-      const yOffset = -80; // Offset to account for sticky header and padding
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -593,22 +516,9 @@ Please check that:
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const section = searchParams.get('section');
-    const highlight = searchParams.get('highlight');
     
-    if (section === 'modals' && !loading) {
-      setActiveSection('modals');
-      
-      if (highlight === 'deep-dive') {
-        // Wait for the section to load, then scroll to the Deep Dive
-        setTimeout(() => {
-          const deepDiveElement = document.getElementById('deep-dive-the-collaborative-edit-modal-two-layer-conflict-resolution');
-          if (deepDiveElement) {
-            const yOffset = -120; // More offset to account for sticky header and show title clearly
-            const y = deepDiveElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }
-        }, 200);
-      }
+    if (section === 'inventory-management' && !loading) {
+      setActiveSection('inventory-management');
     }
   }, [location.search, loading]);
 
@@ -629,36 +539,12 @@ Please check that:
   }
 
   const currentSectionContent = sections[activeSection] || '';
-  const currentNavigation = currentDocType === 'task-board' ? taskBoardNavigation : 
-                           currentDocType === 'chat-app' ? chatAppNavigation : overviewNavigation;
-  const currentTitle = currentDocType === 'task-board' ? 'Task Board Documentation' : 
-                      currentDocType === 'chat-app' ? 'Chat App Documentation' : 'Collaboration Platform Overview';
 
   return (
     <PageContainer>
       <Sidebar>
-        <DocSwitcher>
-          <DocTypeButton
-            $active={currentDocType === 'overview'}
-            onClick={() => setCurrentDocType('overview')}
-          >
-            Overview
-          </DocTypeButton>
-          <DocTypeButton
-            $active={currentDocType === 'task-board'}
-            onClick={() => setCurrentDocType('task-board')}
-          >
-            Task Board
-          </DocTypeButton>
-          <DocTypeButton
-            $active={currentDocType === 'chat-app'}
-            onClick={() => setCurrentDocType('chat-app')}
-          >
-            Chat App
-          </DocTypeButton>
-        </DocSwitcher>
-        <SidebarTitle>{currentTitle}</SidebarTitle>
-        {currentNavigation.map((section) => (
+        <SidebarTitle>Style E-commerce Documentation</SidebarTitle>
+        {styleAppNavigation.map((section) => (
           <NavItem
             key={section.id}
             $active={activeSection === section.id}
@@ -671,28 +557,26 @@ Please check that:
 
       <MainContent>
         <ContentArea>
+          <PageTitle>Style E-commerce Platform</PageTitle>
           <MarkdownContainer>
+            {/* Show video at the top of intro section */}
+            {activeSection === 'intro' && (
+              <VideoContainer>
+                <StyledVideo controls controlsList="nodownload">
+                  <source src="/e-commerce-images/e-commerce-demo.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </StyledVideo>
+                <VideoCaption>Live demo of the Style e-commerce platform</VideoCaption>
+              </VideoContainer>
+            )}
+            
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
               components={{
-                // Custom component for handling section IDs
-                h1: ({ children, ...props }) => {
-                  const id = children?.toString().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
-                  return <h1 id={id} {...props}>{children}</h1>;
-                },
-                h2: ({ children, ...props }) => {
-                  const id = children?.toString().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
-                  return <h2 id={id} {...props}>{children}</h2>;
-                },
-                h3: ({ children, ...props }) => {
-                  const id = children?.toString().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
-                  return <h3 id={id} {...props}>{children}</h3>;
-                },
-                h4: ({ children, ...props }) => {
-                  const id = children?.toString().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
-                  return <h4 id={id} {...props}>{children}</h4>;
-                },
+                h1: ({ children, ...props }) => <h1 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h1>,
+                h2: ({ children, ...props }) => <h2 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h2>,
+                h3: ({ children, ...props }) => <h3 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h3>,
               }}
             >
               {currentSectionContent}
@@ -706,7 +590,7 @@ Please check that:
             {currentSectionToc.map((item) => (
               <TocItemLink
                 key={item.id}
-                level={item.level}
+                $level={item.level}
                 onClick={() => scrollToHeading(item.id)}
               >
                 {item.title}

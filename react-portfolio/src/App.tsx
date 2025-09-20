@@ -7,6 +7,7 @@ import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
 import { Projects } from './pages/Projects';
 import { CollabAppDocs } from './pages/CollabAppDocs';
+import { StyleAppDocs } from './pages/StyleAppDocs';
 import styled from 'styled-components';
 
 const AppContainer = styled.div`
@@ -31,6 +32,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/projects/collab-app" element={<CollabAppDocs />} />
+              <Route path="/projects/e-commerce" element={<StyleAppDocs />} />
             </Routes>
           </MainContent>
           <Footer />

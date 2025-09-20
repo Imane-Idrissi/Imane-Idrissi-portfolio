@@ -146,7 +146,11 @@ export const Projects: React.FC = () => {
                 comprehensive admin dashboard for inventory management.
               </ProjectDescription>
               <ButtonGroup>
-                <Button variant="primary" size="lg">
+                <Button 
+                  variant="primary" 
+                  size="lg"
+                  onClick={() => navigate('/projects/e-commerce')}
+                >
                   View Project →
                 </Button>
               </ButtonGroup>
