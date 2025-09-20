@@ -203,19 +203,19 @@ export const Home: React.FC = () => {
           <SectionTitle>Featured Capabilities</SectionTitle>
           
           <FeatureCard>
-            <FeatureTitle>Real-Time Task Management</FeatureTitle>
+            <FeatureTitle>Collaborative Task Editing</FeatureTitle>
             <FeatureImage>
               <img src="/task-board-images/edit-modal.png" alt="Task editing interface" />
             </FeatureImage>
             <FeatureDescription>
-              Most systems lock users out during simultaneous editing, creating frustration and workflow disruptions. 
-              I built a two-layer conflict resolution system that turns potential conflicts into collaborative opportunities.
+              Editing tasks simultaneously is inevitable in collaboration: users get locked out or the system can let conflicts occur and then resolve them. 
+              I designed a two-layer solution that addresses conflicts at both the human and technical levels.
             </FeatureDescription>
             <BenefitsList>
-              <BenefitItem>Floating chat prevents conflicts before they happen</BenefitItem>
-              <BenefitItem>Real-time presence detection and coordination</BenefitItem>
-              <BenefitItem>Optimistic UI with intelligent rollback mechanisms</BenefitItem>
-              <BenefitItem>Transforms blocking into collaboration opportunities</BenefitItem>
+              <BenefitItem>Floating chat automatically appears when multiple users edit the same task</BenefitItem>
+              <BenefitItem>WebSockets broadcast presence detection for real-time coordination</BenefitItem>
+              <BenefitItem>Optimistic locking with version control for infrastructure-level resolution</BenefitItem>
+              <BenefitItem>Editors can negotiate: "I'll update the description, you handle assignees"</BenefitItem>
             </BenefitsList>
             <Button 
               variant="primary" 
@@ -232,14 +232,14 @@ export const Home: React.FC = () => {
               <img src="/chat-images/ai-task-extraction.png" alt="AI task extraction interface" />
             </FeatureImage>
             <FeatureDescription>
-              Transform unstructured conversations into organized tasks automatically. 
-              Our AI understands context and creates actionable items from team discussions.
+              Traditional chat apps store conversations. This one transforms them. 
+              Our AI analyzes team discussions and automatically suggests actionable tasks with confidence scoring, bridging the gap between communication and project management.
             </FeatureDescription>
             <BenefitsList>
-              <BenefitItem>Context-aware analysis with project team and conversation type intelligence</BenefitItem>
-              <BenefitItem>Confidence scoring (60-100%) with AI reasoning for each suggestion</BenefitItem>
-              <BenefitItem>Levenshtein distance deduplication against existing board tasks</BenefitItem>
-              <BenefitItem>Production-grade rate limiting with 30-minute caching and quota management</BenefitItem>
+              <BenefitItem>AI extracts actionable items from natural conversations</BenefitItem>
+              <BenefitItem>Tasks are suggested with confidence scores and AI reasoning</BenefitItem>
+              <BenefitItem>Smart deduplication prevents similar tasks from being created</BenefitItem>
+              <BenefitItem>One-click task creation directly from chat conversations</BenefitItem>
             </BenefitsList>
             <Button variant="primary" size="md">
               View Case Study →
