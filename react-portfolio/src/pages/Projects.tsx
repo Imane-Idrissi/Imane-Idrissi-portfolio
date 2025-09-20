@@ -5,7 +5,7 @@ import { Button } from '../components/common/Button';
 
 const ProjectsContainer = styled.div`
   min-height: calc(100vh - 70px);
-  padding: ${({ theme }) => theme.spacing.xxl} 0;
+  padding: ${({ theme }) => theme.spacing.md} 0;
 `;
 
 const ProjectsContent = styled.div`
@@ -21,7 +21,7 @@ const ProjectsContent = styled.div`
 const PageTitle = styled.h1`
   font-size: 3rem;
   text-align: center;
-  margin-bottom: ${({ theme }) => theme.spacing.xxl};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
   color: ${({ theme }) => theme.colors.text};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -31,15 +31,15 @@ const PageTitle = styled.h1`
 
 const ProjectGrid = styled.div`
   display: grid;
-  gap: ${({ theme }) => theme.spacing.xxl};
-  max-width: 800px;
+  gap: ${({ theme }) => theme.spacing.xl};
+  max-width: 1100px;
   margin: 0 auto;
 `;
 
 const ProjectCard = styled.div`
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing.xl};
+  padding: ${({ theme }) => theme.spacing.lg};
   border: 3px solid ${({ theme }) => theme.colors.primary};
   transition: all 0.3s ease;
 
@@ -53,9 +53,9 @@ const ProjectImage = styled.div`
   position: relative;
   border-radius: ${({ theme }) => theme.borderRadius.md};
   overflow: hidden;
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
   box-shadow: 0 4px 12px ${({ theme }) => theme.colors.shadow};
-  height: 400px;
+  height: 350px;
 
   img {
     width: 100%;
