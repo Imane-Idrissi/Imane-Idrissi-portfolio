@@ -517,7 +517,7 @@ export const CollabAppDocs: React.FC = () => {
         // Chat App sections
         else if (title.includes('ai task extraction')) {
           sectionMap['ai-extraction'] = part;
-        } else if (title.includes('websocket') || title.includes('real-time')) {
+        } else if (title.includes('websocket') || title.includes('real-time') || title.includes('message ordering')) {
           sectionMap['websocket-architecture'] = part;
         }
         // Common sections
