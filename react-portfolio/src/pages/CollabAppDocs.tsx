@@ -314,6 +314,26 @@ const MarkdownContainer = styled.div`
   }
 `;
 
+const VideoContainer = styled.div`
+  margin: ${({ theme }) => theme.spacing.xl} 0;
+  text-align: center;
+`;
+
+const StyledVideo = styled.video`
+  width: 100%;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  margin-bottom: ${({ theme }) => theme.spacing.md};
+`;
+
+const VideoCaption = styled.p`
+  font-style: italic;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.9rem;
+  margin: 0;
+`;
+
 const LoadingSpinner = styled.div`
   display: flex;
   justify-content: center;
@@ -672,6 +692,18 @@ Please check that:
       <MainContent>
         <ContentArea>
           <MarkdownContainer>
+            {/* Show video at the top of AI extraction section */}
+            {currentDocType === 'chat-app' && activeSection === 'ai-extraction' && (
+              <VideoContainer>
+                <StyledVideo controls controlsList="nodownload">
+                  <source src="/chat-images/task-ai-extraction-video.mov" type="video/quicktime" />
+                  <source src="/chat-images/task-ai-extraction-video.mov" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </StyledVideo>
+                <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
+              </VideoContainer>
+            )}
+            
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
