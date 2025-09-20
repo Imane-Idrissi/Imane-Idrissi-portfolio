@@ -260,7 +260,7 @@ const MarkdownContainer = styled.div`
   }
 
   strong {
-    color: ${({ theme }) => theme.colors.primary};
+    color: #3b82f6;
     font-weight: 600;
   }
 
@@ -359,7 +359,7 @@ const LoadingSpinner = styled.div`
 type DocType = 'overview' | 'task-board' | 'chat-app';
 
 type TaskBoardSection = 'intro' | 'functional-requirements' | 'modals' | 'cap-theorem' | 
-              'implementation' | 'optimistic-ui' | 'caching' | 'concurrency' | 'performance' | 'lessons';
+              'implementation' | 'optimistic-ui' | 'caching' | 'concurrency' | 'lessons';
 
 type ChatAppSection = 'intro' | 'ai-extraction' | 'websocket-architecture' | 'lessons';
 
@@ -376,7 +376,6 @@ const taskBoardNavigation = [
   { id: 'optimistic-ui' as TaskBoardSection, title: 'Optimistic UI Updates', anchor: '#deep-dive-optimistic-ui-updates' },
   { id: 'caching' as TaskBoardSection, title: 'Caching Layer', anchor: '#deep-dive-caching-layer' },
   { id: 'concurrency' as TaskBoardSection, title: 'Concurrency Control', anchor: '#concurrency-control-when-to-lock-vs-when-to-flow' },
-  { id: 'performance' as TaskBoardSection, title: 'Performance & Monitoring', anchor: '#performance-targets-monitoring' },
   { id: 'lessons' as TaskBoardSection, title: 'Lessons Learned', anchor: '#real-world-impact-lessons-learned' }
 ];
 
@@ -475,6 +474,12 @@ export const CollabAppDocs: React.FC = () => {
   const splitMarkdownIntoSections = (content: string): Record<Section, string> => {
     const sectionMap: Record<Section, string> = {} as Record<Section, string>;
     
+    // For overview documentation, include all content in intro section
+    if (currentDocType === 'overview') {
+      sectionMap['intro'] = content;
+      return sectionMap;
+    }
+    
     // Split by ## headers (main sections)
     const parts = content.split(/(?=^## )/m);
     
@@ -521,9 +526,7 @@ export const CollabAppDocs: React.FC = () => {
           sectionMap['websocket-architecture'] = part;
         }
         // Common sections
-        else if (title.includes('performance')) {
-          sectionMap['performance'] = part;
-        } else if (title.includes('real-world impact') || title.includes('lessons learned')) {
+        else if (title.includes('real-world impact') || title.includes('lessons learned')) {
           sectionMap['lessons'] = part;
         }
       }
