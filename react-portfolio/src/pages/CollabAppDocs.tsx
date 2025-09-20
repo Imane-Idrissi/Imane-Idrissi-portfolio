@@ -361,7 +361,7 @@ type DocType = 'overview' | 'task-board' | 'chat-app';
 type TaskBoardSection = 'intro' | 'functional-requirements' | 'modals' | 'cap-theorem' | 
               'implementation' | 'optimistic-ui' | 'caching' | 'concurrency' | 'lessons';
 
-type ChatAppSection = 'intro' | 'ai-extraction' | 'websocket-architecture' | 'lessons';
+type ChatAppSection = 'intro' | 'ai-extraction';
 
 type OverviewSection = 'intro';
 
@@ -381,8 +381,7 @@ const taskBoardNavigation = [
 
 const chatAppNavigation = [
   { id: 'intro' as ChatAppSection, title: 'Introduction', anchor: '#introduction' },
-  { id: 'ai-extraction' as ChatAppSection, title: 'AI Task Extraction', anchor: '#ai-task-extraction-from-conversation-to-action' },
-  { id: 'websocket-architecture' as ChatAppSection, title: 'Message Ordering (HLC)', anchor: '#message-ordering-challenge-in-a-distributed-chat' }
+  { id: 'ai-extraction' as ChatAppSection, title: 'AI Task Extraction', anchor: '#ai-task-extraction-from-conversation-to-action' }
 ];
 
 const overviewNavigation = [
@@ -522,8 +521,6 @@ export const CollabAppDocs: React.FC = () => {
         // Chat App sections
         else if (title.includes('ai task extraction')) {
           sectionMap['ai-extraction'] = part;
-        } else if (title.includes('websocket') || title.includes('real-time') || title.includes('message ordering')) {
-          sectionMap['websocket-architecture'] = part;
         }
         // Common sections
         else if (title.includes('real-world impact') || title.includes('lessons learned')) {
@@ -695,17 +692,35 @@ Please check that:
       <MainContent>
         <ContentArea>
           <MarkdownContainer>
-            {/* Show video at the top of AI extraction section */}
-            {currentDocType === 'chat-app' && activeSection === 'ai-extraction' && (
-              <VideoContainer>
-                <StyledVideo controls controlsList="nodownload">
-                  <source src="/chat-images/task-ai-extraction-video.mov" type="video/quicktime" />
-                  <source src="/chat-images/task-ai-extraction-video.mov" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </StyledVideo>
-                <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
-              </VideoContainer>
-            )}
+            {/* For AI extraction section, extract and show title before video */}
+            {currentDocType === 'chat-app' && activeSection === 'ai-extraction' && (() => {
+              // Extract the first h2 from the markdown content
+              const titleMatch = currentSectionContent.match(/^##\s+(.+)$/m);
+              const title = titleMatch ? titleMatch[1] : null;
+              
+              return title ? (
+                <>
+                  <h2 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h2>
+                  <VideoContainer>
+                    <StyledVideo controls controlsList="nodownload">
+                      <source src="/chat-images/task-ai-extraction-video.mov" type="video/quicktime" />
+                      <source src="/chat-images/task-ai-extraction-video.mov" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </StyledVideo>
+                    <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
+                  </VideoContainer>
+                </>
+              ) : (
+                <VideoContainer>
+                  <StyledVideo controls controlsList="nodownload">
+                    <source src="/chat-images/task-ai-extraction-video.mov" type="video/quicktime" />
+                    <source src="/chat-images/task-ai-extraction-video.mov" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </StyledVideo>
+                  <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
+                </VideoContainer>
+              );
+            })()}
             
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
@@ -718,6 +733,11 @@ Please check that:
                 },
                 h2: ({ children, ...props }) => {
                   const id = children?.toString().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                  // Skip rendering the first h2 in AI extraction section since we already show it
+                  if (currentDocType === 'chat-app' && activeSection === 'ai-extraction' && 
+                      children?.toString() === 'AI Task Extraction – From Conversation to Action') {
+                    return null;
+                  }
                   return <h2 id={id} {...props}>{children}</h2>;
                 },
                 h3: ({ children, ...props }) => {

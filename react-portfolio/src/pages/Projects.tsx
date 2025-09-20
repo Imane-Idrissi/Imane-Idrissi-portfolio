@@ -116,9 +116,9 @@ export const Projects: React.FC = () => {
             </ProjectImage>
             <ProjectContent>
               <ProjectDescription>
-                A comprehensive collaborative platform featuring real-time task management, 
-                AI-powered task extraction, and distributed system architecture. Built with 
-                modern technologies for scalable team collaboration.
+                A collaborative platform that combines a Kanban board with a chat app. 
+                What makes it different is an AI feature that turns group conversations 
+                into actionable tasks that are registered within the task board.
               </ProjectDescription>
               <ButtonGroup>
                 <Button 
@@ -141,9 +141,9 @@ export const Projects: React.FC = () => {
             </ProjectImage>
             <ProjectContent>
               <ProjectDescription>
-                A modern e-commerce platform with elegant design and smooth user experience. 
-                Features include product catalog, shopping cart, secure checkout, and 
-                comprehensive admin dashboard for inventory management.
+                An online store where users can browse women's, men's, and kids' categories 
+                with subcategories. Shoppers can select items with the right size and quantity, 
+                add them to the cart, and complete their purchase through Stripe payments.
               </ProjectDescription>
               <ButtonGroup>
                 <Button 

@@ -372,7 +372,7 @@ interface TocItem {
 
 const styleAppNavigation = [
   { id: 'intro' as StyleAppSection, title: 'Introduction', anchor: '#introduction' },
-  { id: 'inventory-management' as StyleAppSection, title: 'Advanced Inventory Management', anchor: '#advanced-inventory-management' }
+  { id: 'inventory-management' as StyleAppSection, title: 'Inventory Management', anchor: '#inventory-management' }
 ];
 
 export const StyleAppDocs: React.FC = () => {
@@ -423,7 +423,7 @@ export const StyleAppDocs: React.FC = () => {
         
         // Start new section
         const title = headerMatch[1].toLowerCase();
-        if (title.includes('advanced inventory management')) {
+        if (title.includes('inventory management')) {
           currentSection = 'inventory-management';
         } else if (title.includes('introduction')) {
           currentSection = 'intro';
@@ -557,7 +557,6 @@ Please check that:
 
       <MainContent>
         <ContentArea>
-          <PageTitle>Style E-commerce Platform</PageTitle>
           <MarkdownContainer>
             {/* Show video at the top of intro section */}
             {activeSection === 'intro' && (
@@ -566,7 +565,7 @@ Please check that:
                   <source src="/e-commerce-images/e-commerce-demo.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </StyledVideo>
-                <VideoCaption>Live demo of the Style e-commerce platform</VideoCaption>
+                <VideoCaption>demo of the Style e-commerce platform</VideoCaption>
               </VideoContainer>
             )}
             
