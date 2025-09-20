@@ -336,21 +336,73 @@ const LoadingSpinner = styled.div`
   }
 `;
 
-type Section = 'intro' | 'functional-requirements' | 'modals' | 'cap-theorem' | 
+type DocType = 'task-board' | 'chat-app';
+
+type TaskBoardSection = 'intro' | 'functional-requirements' | 'modals' | 'cap-theorem' | 
               'implementation' | 'optimistic-ui' | 'caching' | 'concurrency' | 'performance' | 'lessons';
 
-const sectionNavigation = [
-  { id: 'intro' as Section, title: 'Introduction', anchor: '#introduction' },
-  { id: 'functional-requirements' as Section, title: 'Functional Requirements', anchor: '#functional-requirements-what-users-can-do' },
-  { id: 'modals' as Section, title: 'UI Modals', anchor: '#ui-modals' },
-  { id: 'cap-theorem' as Section, title: 'CAP Theorem Trade-offs', anchor: '#cap-theorem-trade-offs-theory-meets-reality' },
-  { id: 'implementation' as Section, title: 'Implementation Strategies', anchor: '#implementation-strategies-from-theory-to-code' },
-  { id: 'optimistic-ui' as Section, title: 'Optimistic UI Updates', anchor: '#deep-dive-optimistic-ui-updates' },
-  { id: 'caching' as Section, title: 'Caching Layer', anchor: '#deep-dive-caching-layer' },
-  { id: 'concurrency' as Section, title: 'Concurrency Control', anchor: '#concurrency-control-when-to-lock-vs-when-to-flow' },
-  { id: 'performance' as Section, title: 'Performance & Monitoring', anchor: '#performance-targets-monitoring' },
-  { id: 'lessons' as Section, title: 'Lessons Learned', anchor: '#real-world-impact-lessons-learned' }
+type ChatAppSection = 'intro' | 'ai-extraction' | 'websocket-architecture' | 'lessons';
+
+type Section = TaskBoardSection | ChatAppSection;
+
+const taskBoardNavigation = [
+  { id: 'intro' as TaskBoardSection, title: 'Introduction', anchor: '#introduction' },
+  { id: 'functional-requirements' as TaskBoardSection, title: 'Functional Requirements', anchor: '#functional-requirements-what-users-can-do' },
+  { id: 'modals' as TaskBoardSection, title: 'UI Modals', anchor: '#ui-modals' },
+  { id: 'cap-theorem' as TaskBoardSection, title: 'CAP Theorem Trade-offs', anchor: '#cap-theorem-trade-offs-theory-meets-reality' },
+  { id: 'implementation' as TaskBoardSection, title: 'Implementation Strategies', anchor: '#implementation-strategies-from-theory-to-code' },
+  { id: 'optimistic-ui' as TaskBoardSection, title: 'Optimistic UI Updates', anchor: '#deep-dive-optimistic-ui-updates' },
+  { id: 'caching' as TaskBoardSection, title: 'Caching Layer', anchor: '#deep-dive-caching-layer' },
+  { id: 'concurrency' as TaskBoardSection, title: 'Concurrency Control', anchor: '#concurrency-control-when-to-lock-vs-when-to-flow' },
+  { id: 'performance' as TaskBoardSection, title: 'Performance & Monitoring', anchor: '#performance-targets-monitoring' },
+  { id: 'lessons' as TaskBoardSection, title: 'Lessons Learned', anchor: '#real-world-impact-lessons-learned' }
 ];
+
+const chatAppNavigation = [
+  { id: 'intro' as ChatAppSection, title: 'Introduction', anchor: '#introduction' },
+  { id: 'ai-extraction' as ChatAppSection, title: 'AI Task Extraction', anchor: '#ai-task-extraction-from-conversation-to-action' },
+  { id: 'websocket-architecture' as ChatAppSection, title: 'Message Ordering (HLC)', anchor: '#websocket-real-time-architecture-hybrid-logical-clocks' },
+  { id: 'lessons' as ChatAppSection, title: 'Lessons Learned', anchor: '#lessons-learned-that-changed-how-i-build' }
+];
+
+const DocSwitcher = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  padding: 4px;
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  width: 100%;
+`;
+
+const DocTypeButton = styled.button<{ $active: boolean }>`
+  flex: 1;
+  padding: 8px 12px;
+  background: ${({ $active }) => 
+    $active 
+      ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' 
+      : 'transparent'
+  };
+  color: ${({ theme, $active }) => $active ? 'white' : theme.colors.text};
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: ${({ $active }) => $active ? '600' : '500'};
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 0;
+
+  &:hover {
+    background: ${({ $active }) => 
+      $active 
+        ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' 
+        : 'rgba(59, 130, 246, 0.1)'
+    };
+  }
+`;
 
 interface TocItem {
   id: string;
@@ -360,6 +412,7 @@ interface TocItem {
 
 export const CollabAppDocs: React.FC = () => {
   const location = useLocation();
+  const [currentDocType, setCurrentDocType] = useState<DocType>('task-board');
   const [activeSection, setActiveSection] = useState<Section>('intro');
   const [sections, setSections] = useState<Record<Section, string>>({} as Record<Section, string>);
   const [currentSectionToc, setCurrentSectionToc] = useState<TocItem[]>([]);
@@ -398,16 +451,26 @@ export const CollabAppDocs: React.FC = () => {
     const parts = content.split(/(?=^## )/m);
     
     // The first part is the title and introduction
-    const introPart = parts[0] + (parts[1] || '');
+    // Check if second part is the walkthrough section (for chat app docs)
+    let introPart = parts[0] + (parts[1] || '');
+    let startIndex = 2;
+    
+    // If the third part exists and contains "What You'll Discover", include it in intro
+    if (parts[2] && parts[2].toLowerCase().includes("what you'll discover")) {
+      introPart += parts[2];
+      startIndex = 3;
+    }
+    
     sectionMap['intro'] = introPart;
     
     // Map the other sections
-    for (let i = 2; i < parts.length; i++) {
+    for (let i = startIndex; i < parts.length; i++) {
       const part = parts[i];
       const headerMatch = part.match(/^## (.+)/);
       if (headerMatch) {
         const title = headerMatch[1].toLowerCase();
         
+        // Task Board sections
         if (title.includes('functional requirements')) {
           sectionMap['functional-requirements'] = part;
         } else if (title.includes('hidden ui features') || title.includes('modal system') || title.includes('ui modals')) {
@@ -422,7 +485,15 @@ export const CollabAppDocs: React.FC = () => {
           sectionMap['caching'] = part;
         } else if (title.includes('concurrency control')) {
           sectionMap['concurrency'] = part;
-        } else if (title.includes('performance')) {
+        }
+        // Chat App sections
+        else if (title.includes('ai task extraction')) {
+          sectionMap['ai-extraction'] = part;
+        } else if (title.includes('websocket') || title.includes('real-time')) {
+          sectionMap['websocket-architecture'] = part;
+        }
+        // Common sections
+        else if (title.includes('performance')) {
           sectionMap['performance'] = part;
         } else if (title.includes('real-world impact') || title.includes('lessons learned')) {
           sectionMap['lessons'] = part;
@@ -436,9 +507,10 @@ export const CollabAppDocs: React.FC = () => {
   useEffect(() => {
     const loadMarkdownContent = async () => {
       try {
-        console.log('Attempting to load markdown content...');
+        console.log('Attempting to load markdown content for:', currentDocType);
         // Load from public folder with cache busting
-        const response = await fetch(`/task-board-documentation.md?t=${Date.now()}`);
+        const filename = currentDocType === 'task-board' ? 'task-board-documentation.md' : 'chat-app-documentation.md';
+        const response = await fetch(`/${filename}?t=${Date.now()}`);
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers.get('content-type'));
         
@@ -457,6 +529,9 @@ export const CollabAppDocs: React.FC = () => {
         const sectionsMap = splitMarkdownIntoSections(content);
         setSections(sectionsMap);
         console.log('Sections split:', Object.keys(sectionsMap));
+        
+        // Reset to intro section when changing doc type
+        setActiveSection('intro');
       } catch (error) {
         console.error('Error loading markdown content:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -465,13 +540,13 @@ export const CollabAppDocs: React.FC = () => {
 **Issue:** ${errorMessage}
 
 Please check that:
-1. The file \`task-board-documentation.md\` exists in the public folder
+1. The file \`${currentDocType}-documentation.md\` exists in the public folder
 2. The React development server is running properly
 3. There are no routing conflicts
 
 **Debug Info:**
 - Current URL: ${window.location.href}
-- Attempting to fetch: /task-board-documentation.md`;
+- Attempting to fetch: /${currentDocType}-documentation.md`;
         
         setSections({ 'intro': errorContent } as Record<Section, string>);
       } finally {
@@ -480,7 +555,7 @@ Please check that:
     };
 
     loadMarkdownContent();
-  }, []);
+  }, [currentDocType]);
 
   const handleSectionClick = (sectionId: Section) => {
     setActiveSection(sectionId);
@@ -539,12 +614,28 @@ Please check that:
   }
 
   const currentSectionContent = sections[activeSection] || '';
+  const currentNavigation = currentDocType === 'task-board' ? taskBoardNavigation : chatAppNavigation;
+  const currentTitle = currentDocType === 'task-board' ? 'Task Board Documentation' : 'Chat App Documentation';
 
   return (
     <PageContainer>
       <Sidebar>
-        <SidebarTitle>Task Board Documentation</SidebarTitle>
-        {sectionNavigation.map((section) => (
+        <DocSwitcher>
+          <DocTypeButton
+            $active={currentDocType === 'task-board'}
+            onClick={() => setCurrentDocType('task-board')}
+          >
+            Task Board
+          </DocTypeButton>
+          <DocTypeButton
+            $active={currentDocType === 'chat-app'}
+            onClick={() => setCurrentDocType('chat-app')}
+          >
+            Chat App
+          </DocTypeButton>
+        </DocSwitcher>
+        <SidebarTitle>{currentTitle}</SidebarTitle>
+        {currentNavigation.map((section) => (
           <NavItem
             key={section.id}
             $active={activeSection === section.id}

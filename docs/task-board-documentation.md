@@ -3,19 +3,21 @@
 ![Task board full view](/task-board-images/task-board-full-view.png)
 *The complete task board interface - where distributed teams coordinate seamlessly*
 
+> **🕵️ Spoiler:** Notice the "AI generated" badge on the first task? When teams chat naturally in the integrated messaging system, AI analyzes conversations and automatically extracts actionable items as properly formatted tasks. No manual entry needed.
+
 ## Introduction
 
-**The realization that shaped everything:** For any collaborative platform, a Kanban board is a must-have feature. But here's the question that kept me thinking — do all Kanban boards need to be the same? Same features, same experience, same limitations?
+**The realization that shaped everything:** For any collaborative platform, a Kanban board is a must-have feature. But here's the question that kept me thinking—do all Kanban boards need to be the same? Same features, same experience, same limitations?
 
 I started asking myself: **How can I make this feel different while solving real problems that existing task boards ignore?** Most tools either oversimplify (losing essential functionality) or overcomplicate (becoming unusable). I wanted to find that sweet spot where power meets simplicity.
 
 **Two breakthrough features that define this system:**
 
-- **Granular Visibility Options:** The ability to control what each team member sees at the field level. I was thinking about how to balance security with transparency — letting clients see project progress without exposing internal details, budget discussions, or sensitive technical decisions.
+- **Granular Visibility Options:** The ability to control what each team member sees at the field level. I was thinking about how to balance security with transparency—letting clients see project progress without exposing internal details, budget discussions, or sensitive technical decisions.
 
 - **Collaborative Edit Modal with Conflict Prevention:** Instead of just building an infrastructure that deals with conflicts, I added a UX layer to avoid conflicts entirely. Real-time presence indicators and embedded chat turn potential collisions into conversations.
 
-**The technical challenge:** Building a system that feels instant and responsive while ensuring data never gets corrupted or lost. This tension between speed and correctness drove every architectural decision — from WebSocket room management to optimistic UI updates with intelligent rollback strategies.
+**The technical challenge:** Building a system that feels instant and responsive while ensuring data never gets corrupted or lost. This tension between speed and correctness drove every architectural decision—from WebSocket room management to optimistic UI updates with intelligent rollback strategies.
 
 > **What you'll see in this walkthrough:** I'll walk you through exactly how I approached each design challenge, the alternatives I considered, and the moments where I chose pragmatism over perfection. This is the story of building a production-ready collaborative system that actually solves real problems.
 
@@ -80,7 +82,7 @@ Here I'll show you the hidden UI we have in the task board. These modal interfac
 ![Edit task modal with presence](/task-board-images/edit-modal.png)
 *The Edit Modal - Where prevention meets resolution in collaborative editing*
 
-Editing tasks simultaneously is a nightmare in most systems: users get locked out, or conflicts corrupt work. I designed a two-layer solution that addresses conflicts at both the human and technical levels.
+Editing tasks simultaneously is a nightmare in most systems: users get locked out or conflicts corrupt work. I designed a two-layer solution that addresses conflicts at both the human and technical levels.
 
 ### Layer 1: Prevention Through UX — "Let's Talk First"
 
@@ -406,7 +408,7 @@ Different operations need different approaches to handle multiple users working 
 
 - These actions are structural: renaming or deleting a column affects the organization of tasks for every collaborator
 - They are also rare events. Users create, rename, or delete columns infrequently compared to task edits
-- Because they're rare, users can tolerate a short block — filling one field or confirming deletion while the system ensures no one else is making a conflicting change
+- Because they're rare, users can tolerate a short block—filling one field or confirming deletion while the system ensures no one else is making a conflicting change
 
 **In this case, simplicity > concurrency.** Instead of building conflict resolution logic for such rare operations, I opt for straightforward pessimistic locking. It guarantees clarity and prevents messy edge cases like two users renaming the same column differently at the same moment.
 
@@ -415,7 +417,7 @@ Different operations need different approaches to handle multiple users working 
 **Strategy:** Let Conflicts Happen + Resolve
 
 - Task interactions are high-frequency, fine-grained, and highly concurrent
-- Multiple users often edit different parts of the same task at once — one updates the description, another adds an assignee, a third reorders the task
+- Multiple users often edit different parts of the same task at once—one updates the description, another adds an assignee, a third reorders the task
 - If we applied pessimistic locking here, the result would be constant blocking for collaborators and a degraded user experience where people feel like they're "waiting in line" to use the app
 
 **Here, fluid collaboration > strict control.** Collaboration tools succeed when they feel real-time and effortless. Occasional conflict resolution is less damaging than constant friction from locks.
@@ -441,7 +443,7 @@ Real-time collaboration systems need tight performance bounds. Here's what I aim
 - Task creation, editing, movement, deletion
 - Critical because these happen constantly during active collaboration
 
-**Board Operations:** < 500ms from action to server response  
+**Board Operations:** < 500ms from action to server response
 - Board loading, column operations, member management
 - Less frequent but still important for perceived responsiveness
 
@@ -497,9 +499,9 @@ Transparency empowers teams, but unchecked visibility creates security and trust
 
 ### 3. Perception Is Performance
 
-Raw latency numbers (<200 ms, <500 ms) don't mean much on their own, perception is everything. What matters is how users experience responsiveness. Some won't notice half a second of delay, while others will feel it immediately. The real lesson: don't just optimize for metrics, optimize for psychology.
+Raw latency numbers (<200ms, <500ms) don't mean much on their own—perception is everything. What matters is how users experience responsiveness. Some won't notice half a second of delay, while others will feel it immediately. The real lesson: don't just optimize for metrics, optimize for psychology.
 
-Psychology of the target users. Speed is experienced, not measured.
+Psychology of the target users: speed is experienced, not measured.
 
 ### 4. Complexity Comes at a Cost, Is it Worth It?
 
@@ -507,4 +509,4 @@ Every fix introduces complexity. The real question is whether that complexity cr
 
 ### The Core Shift
 
-The biggest lesson wasn't technical, it was human. Building for humans forces you to consider psychology first, then shape the technical decisions around it. The right architecture is the one that serves human trust, perception, and flow.
+The biggest lesson wasn't technical—it was human. Building for humans forces you to consider psychology first, then shape the technical decisions around it. The right architecture is the one that serves human trust, perception, and flow.

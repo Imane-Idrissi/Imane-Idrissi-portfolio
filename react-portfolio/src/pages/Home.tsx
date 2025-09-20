@@ -236,10 +236,10 @@ export const Home: React.FC = () => {
               Our AI understands context and creates actionable items from team discussions.
             </FeatureDescription>
             <BenefitsList>
-              <BenefitItem>Smart content analysis and extraction</BenefitItem>
-              <BenefitItem>Automatic priority and category assignment</BenefitItem>
-              <BenefitItem>Context-aware task creation</BenefitItem>
-              <BenefitItem>Seamless integration with existing workflows</BenefitItem>
+              <BenefitItem>Context-aware analysis with project team and conversation type intelligence</BenefitItem>
+              <BenefitItem>Confidence scoring (60-100%) with AI reasoning for each suggestion</BenefitItem>
+              <BenefitItem>Levenshtein distance deduplication against existing board tasks</BenefitItem>
+              <BenefitItem>Production-grade rate limiting with 30-minute caching and quota management</BenefitItem>
             </BenefitsList>
             <Button variant="primary" size="md">
               View Case Study →
