@@ -336,14 +336,16 @@ const LoadingSpinner = styled.div`
   }
 `;
 
-type DocType = 'task-board' | 'chat-app';
+type DocType = 'overview' | 'task-board' | 'chat-app';
 
 type TaskBoardSection = 'intro' | 'functional-requirements' | 'modals' | 'cap-theorem' | 
               'implementation' | 'optimistic-ui' | 'caching' | 'concurrency' | 'performance' | 'lessons';
 
 type ChatAppSection = 'intro' | 'ai-extraction' | 'websocket-architecture' | 'lessons';
 
-type Section = TaskBoardSection | ChatAppSection;
+type OverviewSection = 'intro';
+
+type Section = TaskBoardSection | ChatAppSection | OverviewSection;
 
 const taskBoardNavigation = [
   { id: 'intro' as TaskBoardSection, title: 'Introduction', anchor: '#introduction' },
@@ -361,16 +363,19 @@ const taskBoardNavigation = [
 const chatAppNavigation = [
   { id: 'intro' as ChatAppSection, title: 'Introduction', anchor: '#introduction' },
   { id: 'ai-extraction' as ChatAppSection, title: 'AI Task Extraction', anchor: '#ai-task-extraction-from-conversation-to-action' },
-  { id: 'websocket-architecture' as ChatAppSection, title: 'Message Ordering (HLC)', anchor: '#websocket-real-time-architecture-hybrid-logical-clocks' },
-  { id: 'lessons' as ChatAppSection, title: 'Lessons Learned', anchor: '#lessons-learned-that-changed-how-i-build' }
+  { id: 'websocket-architecture' as ChatAppSection, title: 'Message Ordering (HLC)', anchor: '#message-ordering-challenge-in-a-distributed-chat' }
+];
+
+const overviewNavigation = [
+  { id: 'intro' as OverviewSection, title: 'Introduction', anchor: '#introduction' }
 ];
 
 const DocSwitcher = styled.div`
   display: flex;
-  flex-direction: row;
-  gap: 4px;
+  flex-direction: column;
+  gap: 6px;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
-  padding: 4px;
+  padding: 6px;
   background: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -378,8 +383,8 @@ const DocSwitcher = styled.div`
 `;
 
 const DocTypeButton = styled.button<{ $active: boolean }>`
-  flex: 1;
-  padding: 8px 12px;
+  width: 100%;
+  padding: 10px 16px;
   background: ${({ $active }) => 
     $active 
       ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' 
@@ -387,12 +392,12 @@ const DocTypeButton = styled.button<{ $active: boolean }>`
   };
   color: ${({ theme, $active }) => $active ? 'white' : theme.colors.text};
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: ${({ $active }) => $active ? '600' : '500'};
   transition: all 0.3s ease;
-  white-space: nowrap;
+  text-align: left;
   min-width: 0;
 
   &:hover {
@@ -401,6 +406,7 @@ const DocTypeButton = styled.button<{ $active: boolean }>`
         ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' 
         : 'rgba(59, 130, 246, 0.1)'
     };
+    transform: translateX(2px);
   }
 `;
 
@@ -412,7 +418,7 @@ interface TocItem {
 
 export const CollabAppDocs: React.FC = () => {
   const location = useLocation();
-  const [currentDocType, setCurrentDocType] = useState<DocType>('task-board');
+  const [currentDocType, setCurrentDocType] = useState<DocType>('overview');
   const [activeSection, setActiveSection] = useState<Section>('intro');
   const [sections, setSections] = useState<Record<Section, string>>({} as Record<Section, string>);
   const [currentSectionToc, setCurrentSectionToc] = useState<TocItem[]>([]);
@@ -509,7 +515,14 @@ export const CollabAppDocs: React.FC = () => {
       try {
         console.log('Attempting to load markdown content for:', currentDocType);
         // Load from public folder with cache busting
-        const filename = currentDocType === 'task-board' ? 'task-board-documentation.md' : 'chat-app-documentation.md';
+        let filename: string;
+        if (currentDocType === 'task-board') {
+          filename = 'task-board-documentation.md';
+        } else if (currentDocType === 'chat-app') {
+          filename = 'chat-app-documentation.md';
+        } else {
+          filename = 'overview-documentation.md';
+        }
         const response = await fetch(`/${filename}?t=${Date.now()}`);
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers.get('content-type'));
@@ -614,13 +627,21 @@ Please check that:
   }
 
   const currentSectionContent = sections[activeSection] || '';
-  const currentNavigation = currentDocType === 'task-board' ? taskBoardNavigation : chatAppNavigation;
-  const currentTitle = currentDocType === 'task-board' ? 'Task Board Documentation' : 'Chat App Documentation';
+  const currentNavigation = currentDocType === 'task-board' ? taskBoardNavigation : 
+                           currentDocType === 'chat-app' ? chatAppNavigation : overviewNavigation;
+  const currentTitle = currentDocType === 'task-board' ? 'Task Board Documentation' : 
+                      currentDocType === 'chat-app' ? 'Chat App Documentation' : 'Collaboration Platform Overview';
 
   return (
     <PageContainer>
       <Sidebar>
         <DocSwitcher>
+          <DocTypeButton
+            $active={currentDocType === 'overview'}
+            onClick={() => setCurrentDocType('overview')}
+          >
+            Overview
+          </DocTypeButton>
           <DocTypeButton
             $active={currentDocType === 'task-board'}
             onClick={() => setCurrentDocType('task-board')}
