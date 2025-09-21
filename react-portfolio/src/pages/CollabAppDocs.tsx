@@ -668,16 +668,17 @@ export const CollabAppDocs: React.FC = () => {
 
   useEffect(() => {
     const loadMarkdownContent = async () => {
+      // Load from public folder with cache busting
+      let filename: string;
+      if (currentDocType === 'task-board') {
+        filename = 'docs/projects/collab-app/task-board.md';
+      } else if (currentDocType === 'chat-app') {
+        filename = 'docs/projects/collab-app/chat-app.md';
+      } else {
+        filename = 'docs/projects/collab-app/overview.md';
+      }
+      
       try {
-        // Load from public folder with cache busting
-        let filename: string;
-        if (currentDocType === 'task-board') {
-          filename = 'task-board-documentation.md';
-        } else if (currentDocType === 'chat-app') {
-          filename = 'chat-app-documentation.md';
-        } else {
-          filename = 'overview-documentation.md';
-        }
         const response = await fetch(`/${filename}?t=${Date.now()}`);
         
         if (!response.ok) {
@@ -708,13 +709,13 @@ export const CollabAppDocs: React.FC = () => {
 **Issue:** ${errorMessage}
 
 Please check that:
-1. The file \`${currentDocType}-documentation.md\` exists in the public folder
+1. The file exists in the public/docs/projects/collab-app/ folder
 2. The React development server is running properly
 3. There are no routing conflicts
 
 **Debug Info:**
 - Current URL: ${window.location.href}
-- Attempting to fetch: /${currentDocType}-documentation.md`;
+- Attempting to fetch: /${filename}`;
         
         setSections({ 'intro': errorContent } as Record<Section, string>);
       } finally {
@@ -896,8 +897,8 @@ Please check that:
                   <h2 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h2>
                   <VideoContainer>
                     <StyledVideo controls controlsList="nodownload">
-                      <source src="/chat-images/task-ai-extraction-video.mov" type="video/quicktime" />
-                      <source src="/chat-images/task-ai-extraction-video.mov" type="video/mp4" />
+                      <source src="/assets/projects/collab-app/videos/task-ai-extraction.mov" type="video/quicktime" />
+                      <source src="/assets/projects/collab-app/videos/task-ai-extraction.mov" type="video/mp4" />
                       Your browser does not support the video tag.
                     </StyledVideo>
                     <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
@@ -906,8 +907,8 @@ Please check that:
               ) : (
                 <VideoContainer>
                   <StyledVideo controls controlsList="nodownload">
-                    <source src="/chat-images/task-ai-extraction-video.mov" type="video/quicktime" />
-                    <source src="/chat-images/task-ai-extraction-video.mov" type="video/mp4" />
+                    <source src="/assets/projects/collab-app/videos/task-ai-extraction.mov" type="video/quicktime" />
+                    <source src="/assets/projects/collab-app/videos/task-ai-extraction.mov" type="video/mp4" />
                     Your browser does not support the video tag.
                   </StyledVideo>
                   <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>

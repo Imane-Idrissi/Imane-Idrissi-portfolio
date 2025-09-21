@@ -347,6 +347,11 @@ const MarkdownContainer = styled.div`
     }
   }
 
+  strong {
+    color: #3b82f6;
+    font-weight: 600;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -477,7 +482,7 @@ export const StyleAppDocs: React.FC = () => {
   useEffect(() => {
     const loadMarkdownContent = async () => {
       try {
-        const response = await fetch(`/style-app-documentation.md?t=${Date.now()}`);
+        const response = await fetch(`/docs/projects/e-commerce/style-app.md?t=${Date.now()}`);
         
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -502,13 +507,13 @@ export const StyleAppDocs: React.FC = () => {
 **Issue:** ${errorMessage}
 
 Please check that:
-1. The file \`style-app-documentation.md\` exists in the public folder
+1. The file exists in the public/docs/projects/e-commerce/ folder
 2. The React development server is running properly
 3. There are no routing conflicts
 
 **Debug Info:**
 - Current URL: ${window.location.href}
-- Attempting to fetch: /style-app-documentation.md`;
+- Attempting to fetch: /docs/projects/e-commerce/style-app.md`;
         
         setSections({ 'intro': errorContent } as Record<StyleAppSection, string>);
       } finally {
@@ -591,22 +596,45 @@ Please check that:
       <MainContent>
         <ContentArea>
           <MarkdownContainer>
-            {/* Show video at the top of intro section */}
-            {activeSection === 'intro' && (
-              <VideoContainer>
-                <StyledVideo controls controlsList="nodownload">
-                  <source src="/e-commerce-images/e-commerce-demo.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </StyledVideo>
-                <VideoCaption>demo of the Style e-commerce platform</VideoCaption>
-              </VideoContainer>
-            )}
+            {/* Show title and video at the top of intro section */}
+            {activeSection === 'intro' && (() => {
+              // Extract the first h1 from the markdown content
+              const titleMatch = currentSectionContent.match(/^#\s+(.+)$/m);
+              const title = titleMatch ? titleMatch[1] : null;
+              
+              return title ? (
+                <>
+                  <h1 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h1>
+                  <VideoContainer>
+                    <StyledVideo controls controlsList="nodownload">
+                      <source src="/assets/projects/e-commerce/demo.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </StyledVideo>
+                    <VideoCaption>demo of the Style e-commerce platform</VideoCaption>
+                  </VideoContainer>
+                </>
+              ) : (
+                <VideoContainer>
+                  <StyledVideo controls controlsList="nodownload">
+                    <source src="/assets/projects/e-commerce/demo.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </StyledVideo>
+                  <VideoCaption>demo of the Style e-commerce platform</VideoCaption>
+                </VideoContainer>
+              );
+            })()}
             
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
               components={{
-                h1: ({ children, ...props }) => <h1 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h1>,
+                h1: ({ children, ...props }) => {
+                  // Skip rendering the first h1 in intro section since we already show it
+                  if (activeSection === 'intro' && children?.toString() === 'Style E-commerce App') {
+                    return null;
+                  }
+                  return <h1 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h1>;
+                },
                 h2: ({ children, ...props }) => <h2 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h2>,
                 h3: ({ children, ...props }) => <h3 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h3>,
               }}

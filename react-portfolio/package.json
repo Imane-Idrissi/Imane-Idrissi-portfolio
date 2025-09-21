@@ -2,6 +2,7 @@
   "name": "react-portfolio",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://imaneidrissi.com",
   "dependencies": {
     "@types/node": "^16.18.96",
     "@types/react": "^18.2.79",
@@ -16,16 +17,13 @@
     "rehype-highlight": "^7.0.2",
     "remark-gfm": "^4.0.1",
     "styled-components": "^6.1.8",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "clean-logs": "node remove-console-logs.js",
-    "clean-logs-dry": "node remove-console-logs.js --dry-run"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

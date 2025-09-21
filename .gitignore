@@ -74,7 +74,7 @@ jspm_packages/
 
 # Gatsby files
 .cache/
-public
+# Note: public folder should be tracked for portfolio websites
 
 # Storybook build outputs
 .out

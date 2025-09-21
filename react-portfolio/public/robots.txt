@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://imaneidrissi.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Allow all assets
+Allow: /assets/
+Allow: /static/
+
+# Block access to source maps
+Disallow: /*.map
+Disallow: /static/js/*.map
+Disallow: /static/css/*.map

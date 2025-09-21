@@ -112,7 +112,7 @@ export const Projects: React.FC = () => {
               <ProjectTitle>CollabApp</ProjectTitle>
             </ProjectContent>
             <ProjectImage>
-              <img src="/home-images/collab-app-home.png" alt="Collab App Homepage" />
+              <img src="/assets/projects/collab-app/home.webp" alt="CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat" />
             </ProjectImage>
             <ProjectContent>
               <ProjectDescription>
@@ -137,7 +137,7 @@ export const Projects: React.FC = () => {
               <ProjectTitle>Style App</ProjectTitle>
             </ProjectContent>
             <ProjectImage>
-              <img src="/home-images/e-commerce-home.png" alt="Style App Homepage" />
+              <img src="/assets/projects/e-commerce/home.webp" alt="Style App - Modern e-commerce platform with Stripe payments and inventory management" />
             </ProjectImage>
             <ProjectContent>
               <ProjectDescription>

@@ -315,7 +315,7 @@ export const Home: React.FC = () => {
           <FeatureCard>
             <FeatureTitle>Collaborative Task Editing</FeatureTitle>
             <FeatureImage>
-              <img src="/task-board-images/edit-modal.png" alt="Task editing interface" />
+              <img src="/assets/projects/collab-app/task-board/edit-modal.webp" alt="Real-time collaborative task editing with presence indicators and conflict resolution" />
             </FeatureImage>
             <FeatureDescription>
               Editing tasks simultaneously is inevitable in collaboration: users get locked out or the system can let conflicts occur and then resolve them. 
@@ -339,7 +339,7 @@ export const Home: React.FC = () => {
           <FeatureCard>
             <FeatureTitle>AI-Powered Task Extraction</FeatureTitle>
             <FeatureImage>
-              <img src="/chat-images/ai-task-extraction.png" alt="AI task extraction interface" />
+              <img src="/assets/projects/collab-app/ai-task-extraction.webp" alt="AI-powered task extraction from chat conversations using Google Gemini" />
             </FeatureImage>
             <FeatureDescription>
               Traditional chat apps store conversations. This one transforms them. 
