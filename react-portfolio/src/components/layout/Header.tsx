@@ -40,10 +40,20 @@ const Logo = styled(Link)`
     opacity: 0.8;
   }
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 1.125rem;
+    gap: 0.25rem;
+  }
+
   img {
     width: 40px;
     height: 40px;
     border-radius: ${({ theme }) => theme.borderRadius.md};
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      width: 35px;
+      height: 35px;
+    }
   }
 `;
 
@@ -54,6 +64,10 @@ const NavLinks = styled.div`
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     gap: ${({ theme }) => theme.spacing.md};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: ${({ theme }) => theme.spacing.sm};
   }
 `;
 
@@ -67,6 +81,10 @@ const NavLink = styled(Link)<{ $isActive?: boolean }>`
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 0.9rem;
   }
 
   ${({ $isActive, theme }) => $isActive && `
@@ -92,6 +110,10 @@ const ContactLink = styled.button`
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 0.9rem;
+  }
 `;
 
 const ThemeToggle = styled.button`
@@ -110,6 +132,16 @@ const ThemeToggle = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.colors.border};
     transform: scale(1.05);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+    
+    &:hover {
+      transform: scale(1.02);
+    }
   }
 `;
 

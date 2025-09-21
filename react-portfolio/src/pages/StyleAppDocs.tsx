@@ -12,7 +12,7 @@ const PageContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
-const Sidebar = styled.aside`
+const Sidebar = styled.aside<{ $isOpen?: boolean }>`
   width: 280px;
   background: ${({ theme }) => theme.colors.surface};
   border-right: 1px solid ${({ theme }) => theme.colors.border};
@@ -23,8 +23,15 @@ const Sidebar = styled.aside`
   overflow-y: auto;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: none;
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    position: fixed;
+    top: 0;
+    left: ${({ $isOpen }) => $isOpen ? '0' : '-280px'};
+    width: 280px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -57,10 +64,62 @@ const RightSidebar = styled.aside`
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(10px);
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: 100%;
-    position: static;
-    margin-top: ${({ theme }) => theme.spacing.xl};
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    display: none;
+  }
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  padding: 12px 24px;
+  background: ${({ theme }) => theme.colors.primary};
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryHover};
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  }
+
+  &:active {
+    transform: translateX(-50%) translateY(0px);
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    display: flex;
+  }
+`;
+
+const MobileOverlay = styled.div<{ $isOpen?: boolean }>`
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: ${({ $isOpen }) => $isOpen ? 1 : 0};
+  visibility: ${({ $isOpen }) => $isOpen ? 'visible' : 'hidden'};
+  transition: all 0.3s ease;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    display: block;
   }
 `;
 
@@ -326,19 +385,6 @@ const VideoCaption = styled.p`
   margin: 0;
 `;
 
-const PageTitle = styled.h1`
-  font-size: 2.5rem;
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-  font-weight: 800;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.2;
-  text-align: center;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.border};
-  padding-bottom: ${({ theme }) => theme.spacing.lg};
-`;
 
 const LoadingSpinner = styled.div`
   display: flex;
@@ -381,6 +427,7 @@ export const StyleAppDocs: React.FC = () => {
   const [sections, setSections] = useState<Record<StyleAppSection, string>>({} as Record<StyleAppSection, string>);
   const [currentSectionToc, setCurrentSectionToc] = useState<TocItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const extractTableOfContents = (markdownContent: string): TocItem[] => {
     const lines = markdownContent.split('\n');
@@ -474,6 +521,7 @@ Please check that:
 
   const handleSectionClick = (sectionId: StyleAppSection) => {
     setActiveSection(sectionId);
+    setIsMobileMenuOpen(false); // Close mobile menu
     // Update table of contents for the new section
     const sectionContent = sections[sectionId] || '';
     const tocItems = extractTableOfContents(sectionContent);
@@ -517,7 +565,17 @@ Please check that:
 
   return (
     <PageContainer>
-      <Sidebar>
+      <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        <span>{isMobileMenuOpen ? '✕' : '📋'}</span>
+        <span>{isMobileMenuOpen ? 'Close Navigation' : 'View Navigation'}</span>
+      </MobileMenuButton>
+      
+      <MobileOverlay 
+        $isOpen={isMobileMenuOpen} 
+        onClick={() => setIsMobileMenuOpen(false)} 
+      />
+      
+      <Sidebar $isOpen={isMobileMenuOpen}>        
         <SidebarTitle>Style E-commerce Documentation</SidebarTitle>
         {styleAppNavigation.map((section) => (
           <NavItem

@@ -122,6 +122,15 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: ${({ theme }) => theme.spacing.xxl};
   color: ${({ theme }) => theme.colors.text};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 2rem;
+    margin-bottom: ${({ theme }) => theme.spacing.xl};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 1.75rem;
+  }
 `;
 
 const FeatureCard = styled.div<{ $reverse?: boolean }>`
@@ -140,19 +149,33 @@ const FeatureCard = styled.div<{ $reverse?: boolean }>`
     margin-bottom: 0;
     padding-bottom: 0;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: ${({ theme }) => theme.spacing.lg};
+    margin-bottom: ${({ theme }) => theme.spacing.xl};
+    padding-bottom: ${({ theme }) => theme.spacing.xl};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    gap: ${({ theme }) => theme.spacing.md};
+  }
 `;
 
-const FeatureContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.md};
-`;
 
 const FeatureTitle = styled.h3`
   font-size: 2rem;
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: ${({ theme }) => theme.spacing.sm};
   text-align: left;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 1.5rem;
+  }
 `;
 
 const FeatureDescription = styled.p`
@@ -160,16 +183,26 @@ const FeatureDescription = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   line-height: 1.6;
   margin-bottom: ${({ theme }) => theme.spacing.md};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 1rem;
+    text-align: center;
+  }
 `;
 
 const BenefitsList = styled.ul`
   list-style: none;
   margin-bottom: ${({ theme }) => theme.spacing.lg};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    text-align: left;
+    max-width: 100%;
+  }
 `;
 
 const BenefitItem = styled.li`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: ${({ theme }) => theme.spacing.xs};
   color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: ${({ theme }) => theme.spacing.xs};
@@ -177,6 +210,13 @@ const BenefitItem = styled.li`
   &::before {
     content: '✅';
     font-size: 1rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 0.95rem;
+    line-height: 1.5;
   }
 `;
 
@@ -195,6 +235,23 @@ const FeatureImage = styled.div`
     transform: translateY(-5px) scale(1.02);
   }
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    height: 350px;
+    
+    &:hover {
+      transform: translateY(-3px) scale(1.01);
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    height: 280px;
+    border-width: 2px;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+
   img {
     width: 100%;
     height: 100%;
@@ -209,6 +266,12 @@ const FeatureImage = styled.div`
 
     &:hover {
       transform: scale(1.01);
+    }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      &:hover {
+        transform: none;
+      }
     }
   }
 `;
