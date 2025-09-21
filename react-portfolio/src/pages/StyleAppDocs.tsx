@@ -430,16 +430,13 @@ export const StyleAppDocs: React.FC = () => {
   useEffect(() => {
     const loadMarkdownContent = async () => {
       try {
-        console.log('Loading Style app documentation...');
         const response = await fetch(`/style-app-documentation.md?t=${Date.now()}`);
-        console.log('Response status:', response.status);
         
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
         const content = await response.text();
-        console.log('Content loaded, first 100 chars:', content.substring(0, 100));
         
         // Check if we're getting HTML instead of markdown
         if (content.includes('<!DOCTYPE html>')) {
@@ -448,12 +445,10 @@ export const StyleAppDocs: React.FC = () => {
         
         const sectionsMap = splitMarkdownIntoSections(content);
         setSections(sectionsMap);
-        console.log('Sections split:', Object.keys(sectionsMap));
         
         // Reset to intro section
         setActiveSection('intro');
       } catch (error) {
-        console.error('Error loading markdown content:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         const errorContent = `# Error Loading Documentation
 

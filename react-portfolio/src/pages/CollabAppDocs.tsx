@@ -471,10 +471,8 @@ export const CollabAppDocs: React.FC = () => {
           };
           
           if (validSections[docType].includes(section)) {
-            console.log('Valid hash parsed:', { docType, section });
             return { docType, section };
           } else {
-            console.log('Invalid section for docType:', { docType, section, validSections: validSections[docType] });
           }
         }
       }
@@ -609,7 +607,6 @@ export const CollabAppDocs: React.FC = () => {
   useEffect(() => {
     const loadMarkdownContent = async () => {
       try {
-        console.log('Attempting to load markdown content for:', currentDocType);
         // Load from public folder with cache busting
         let filename: string;
         if (currentDocType === 'task-board') {
@@ -620,15 +617,12 @@ export const CollabAppDocs: React.FC = () => {
           filename = 'overview-documentation.md';
         }
         const response = await fetch(`/${filename}?t=${Date.now()}`);
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers.get('content-type'));
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const content = await response.text();
-        console.log('Content loaded, first 100 chars:', content.substring(0, 100));
         
         // Check if we're getting HTML instead of markdown
         if (content.includes('<!DOCTYPE html>')) {
@@ -637,19 +631,15 @@ export const CollabAppDocs: React.FC = () => {
         
         const sectionsMap = splitMarkdownIntoSections(content);
         setSections(sectionsMap);
-        console.log('Sections split:', Object.keys(sectionsMap));
         
         // Only reset to intro section when changing doc type manually, not on initial load
         if (!sections || Object.keys(sections).length === 0) {
           // This is initial load, don't override the initial state from URL
-          console.log('Initial load - keeping activeSection as:', activeSection);
         } else {
           // This is a doc type change, reset to intro
           setActiveSection('intro');
         }
-        console.log('Sections loaded for', currentDocType, ':', Object.keys(sectionsMap));
       } catch (error) {
-        console.error('Error loading markdown content:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         const errorContent = `# Error Loading Documentation
 
@@ -720,7 +710,6 @@ Please check that:
     }
     
     if (goto === 'ai-powered-task-extraction') {
-      console.log('Processing AI extraction goto parameter');
       // Switch to chat-app documentation and ai-extraction section immediately
       setCurrentDocType('chat-app');
       setActiveSection('ai-extraction');
@@ -729,7 +718,6 @@ Please check that:
       // Clean up URL and set final URL
       const newUrl = window.location.pathname + '#chat-app-ai-extraction';
       window.history.replaceState({}, '', newUrl);
-      console.log('Set state to:', { docType: 'chat-app', section: 'ai-extraction', newUrl });
     }
   }, [location.search]);
 
@@ -779,7 +767,6 @@ Please check that:
   }
 
   const currentSectionContent = sections[activeSection] || '';
-  console.log('Rendering section:', activeSection, 'Content length:', currentSectionContent.length, 'Available sections:', Object.keys(sections));
   
   const currentNavigation = currentDocType === 'task-board' ? taskBoardNavigation : 
                            currentDocType === 'chat-app' ? chatAppNavigation : overviewNavigation;
