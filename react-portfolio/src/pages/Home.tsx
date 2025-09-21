@@ -63,6 +63,45 @@ const HeroDescription = styled.p`
   }
 `;
 
+const DocumentationCTA = styled.div`
+  margin-top: ${({ theme }) => theme.spacing.lg};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
+  background: ${({ theme }) => 
+    theme.colors.background === '#1a202c'
+      ? `${theme.colors.surface}` 
+      : '#bae6fd'};
+  border-radius: 0 ${({ theme }) => theme.borderRadius.lg} ${({ theme }) => theme.borderRadius.lg} 0;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  border-left: 5px solid ${({ theme }) => theme.colors.primary};
+  position: relative;
+  
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    flex-direction: column;
+    text-align: center;
+  }
+`;
+
+const CTAText = styled.p`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.text};
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.4;
+  flex: 1;
+  
+  .star {
+    font-size: 1.1rem;
+    margin-right: 0.3rem;
+  }
+`;
+
 const FeaturesSection = styled.section`
   background-color: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme }) => theme.spacing.xxl} 0;
@@ -189,6 +228,14 @@ export const Home: React.FC = () => {
           with modern technologies. I love building scalable applications and 
           solving complex problems through clean, efficient code.
         </HeroDescription>
+        
+        <DocumentationCTA>
+          <CTAText>
+            <span className="star">⭐</span>
+            Beyond the projects: discover the stories and decisions behind them
+          </CTAText>
+        </DocumentationCTA>
+        
         <Button 
           variant="primary" 
           size="lg"

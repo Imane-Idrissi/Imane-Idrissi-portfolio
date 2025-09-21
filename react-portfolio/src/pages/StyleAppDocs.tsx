@@ -406,45 +406,25 @@ export const StyleAppDocs: React.FC = () => {
 
   // Split markdown into sections based on main headings
   const splitMarkdownIntoSections = (content: string): Record<StyleAppSection, string> => {
-    const lines = content.split('\n');
-    const sectionMap: Record<string, string> = {};
-    let currentSection = 'intro';
-    let currentContent: string[] = [];
-
-    lines.forEach((line, index) => {
-      // Check for main section headers (##)
-      const headerMatch = line.match(/^##\s+(.+)/);
-      
-      if (headerMatch) {
-        // Save previous section
-        if (currentContent.length > 0) {
-          sectionMap[currentSection] = currentContent.join('\n').trim();
-        }
-        
-        // Start new section
-        const title = headerMatch[1].toLowerCase();
-        if (title.includes('inventory management')) {
-          currentSection = 'inventory-management';
-        } else if (title.includes('introduction')) {
-          currentSection = 'intro';
-        }
-        // Common sections
-        else if (title.includes('lessons')) {
-          currentSection = 'lessons';
-        }
-        
-        currentContent = [line];
-      } else {
-        currentContent.push(line);
-      }
-    });
-
-    // Don't forget the last section
-    if (currentContent.length > 0) {
-      sectionMap[currentSection] = currentContent.join('\n').trim();
+    // Find the split point for inventory management
+    const inventoryIndex = content.indexOf('## Inventory Management');
+    
+    if (inventoryIndex === -1) {
+      // If no inventory management section found, everything goes to intro
+      return {
+        'intro': content,
+        'inventory-management': ''
+      } as Record<StyleAppSection, string>;
     }
-
-    return sectionMap as Record<StyleAppSection, string>;
+    
+    // Split content: everything before inventory management goes to intro
+    const introContent = content.substring(0, inventoryIndex).trim();
+    const inventoryContent = content.substring(inventoryIndex).trim();
+    
+    return {
+      'intro': introContent,
+      'inventory-management': inventoryContent
+    } as Record<StyleAppSection, string>;
   };
 
   useEffect(() => {
