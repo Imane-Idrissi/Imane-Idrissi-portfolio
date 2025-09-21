@@ -109,7 +109,7 @@ export const Projects: React.FC = () => {
         <ProjectGrid>
           <ProjectCard>
             <ProjectContent>
-              <ProjectTitle>Collab App</ProjectTitle>
+              <ProjectTitle>CollabApp</ProjectTitle>
             </ProjectContent>
             <ProjectImage>
               <img src="/home-images/collab-app-home.png" alt="Collab App Homepage" />

@@ -267,7 +267,7 @@ export const Home: React.FC = () => {
             <Button 
               variant="primary" 
               size="md"
-              onClick={() => navigate('/projects/collab-app?section=modals&highlight=deep-dive')}
+              onClick={() => navigate('/projects/collab-app?goto=deep-dive-the-edit-modal-multiple-users-editing-the-same-task')}
             >
               View Case Study →
             </Button>
@@ -288,7 +288,11 @@ export const Home: React.FC = () => {
               <BenefitItem>Smart deduplication prevents similar tasks from being created</BenefitItem>
               <BenefitItem>One-click task creation directly from chat conversations</BenefitItem>
             </BenefitsList>
-            <Button variant="primary" size="md">
+            <Button 
+              variant="primary" 
+              size="md"
+              onClick={() => navigate('/projects/collab-app?goto=ai-powered-task-extraction')}
+            >
               View Case Study →
             </Button>
           </FeatureCard>

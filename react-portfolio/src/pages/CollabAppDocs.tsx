@@ -438,11 +438,59 @@ interface TocItem {
 
 export const CollabAppDocs: React.FC = () => {
   const location = useLocation();
-  const [currentDocType, setCurrentDocType] = useState<DocType>('overview');
-  const [activeSection, setActiveSection] = useState<Section>('intro');
+  
+  // Initialize state from URL hash
+  const getInitialStateFromUrl = () => {
+    const hash = window.location.hash.slice(1); // Remove #
+    const params = new URLSearchParams(window.location.search);
+    const goto = params.get('goto');
+    
+    // Handle goto parameter (existing logic)
+    if (goto === 'deep-dive-the-edit-modal-multiple-users-editing-the-same-task') {
+      return { docType: 'task-board' as DocType, section: 'modals' as Section };
+    }
+    
+    if (goto === 'ai-powered-task-extraction') {
+      return { docType: 'chat-app' as DocType, section: 'ai-extraction' as Section };
+    }
+    
+    // Parse hash format: doctype-section (e.g., task-board-modals)
+    if (hash) {
+      const parts = hash.split('-');
+      if (parts.length >= 2) {
+        const docType = parts[0] as DocType;
+        const section = parts.slice(1).join('-') as Section;
+        
+        // Validate docType and section
+        if (['overview', 'task-board', 'chat-app'].includes(docType)) {
+          // Additional validation: check if section is valid for the docType
+          const validSections = {
+            'overview': ['intro'],
+            'task-board': ['intro', 'functional-requirements', 'modals', 'cap-theorem', 'implementation', 'optimistic-ui', 'caching', 'concurrency', 'lessons'],
+            'chat-app': ['intro', 'ai-extraction']
+          };
+          
+          if (validSections[docType].includes(section)) {
+            console.log('Valid hash parsed:', { docType, section });
+            return { docType, section };
+          } else {
+            console.log('Invalid section for docType:', { docType, section, validSections: validSections[docType] });
+          }
+        }
+      }
+    }
+    
+    return { docType: 'overview' as DocType, section: 'intro' as Section };
+  };
+  
+  const initialState = getInitialStateFromUrl();
+  const [currentDocType, setCurrentDocType] = useState<DocType>(initialState.docType);
+  const [activeSection, setActiveSection] = useState<Section>(initialState.section);
   const [sections, setSections] = useState<Record<Section, string>>({} as Record<Section, string>);
   const [currentSectionToc, setCurrentSectionToc] = useState<TocItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pendingScroll, setPendingScroll] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const extractTableOfContents = (markdownContent: string): TocItem[] => {
     const lines = markdownContent.split('\n');
@@ -532,6 +580,32 @@ export const CollabAppDocs: React.FC = () => {
     return sectionMap;
   };
 
+  // Detect page refresh and show loading state
+  useEffect(() => {
+    // Check if this is a page refresh
+    const isPageRefresh = sessionStorage.getItem('pageRefreshed') === 'true';
+    
+    if (isPageRefresh) {
+      setIsRefreshing(true);
+      // Show loading spinner for a brief moment to give refresh feedback
+      setTimeout(() => {
+        setIsRefreshing(false);
+        sessionStorage.removeItem('pageRefreshed');
+      }, 300);
+    }
+    
+    // Set flag for next potential refresh
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem('pageRefreshed', 'true');
+    };
+    
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   useEffect(() => {
     const loadMarkdownContent = async () => {
       try {
@@ -565,8 +639,15 @@ export const CollabAppDocs: React.FC = () => {
         setSections(sectionsMap);
         console.log('Sections split:', Object.keys(sectionsMap));
         
-        // Reset to intro section when changing doc type
-        setActiveSection('intro');
+        // Only reset to intro section when changing doc type manually, not on initial load
+        if (!sections || Object.keys(sections).length === 0) {
+          // This is initial load, don't override the initial state from URL
+          console.log('Initial load - keeping activeSection as:', activeSection);
+        } else {
+          // This is a doc type change, reset to intro
+          setActiveSection('intro');
+        }
+        console.log('Sections loaded for', currentDocType, ':', Object.keys(sectionsMap));
       } catch (error) {
         console.error('Error loading markdown content:', error);
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -592,12 +673,25 @@ Please check that:
     loadMarkdownContent();
   }, [currentDocType]);
 
+  // Update URL to reflect current state
+  const updateUrl = (docType: DocType, section: Section) => {
+    const hash = `${docType}-${section}`;
+    window.history.replaceState(null, '', `${window.location.pathname}#${hash}`);
+  };
+
   const handleSectionClick = (sectionId: Section) => {
     setActiveSection(sectionId);
+    updateUrl(currentDocType, sectionId);
     // Update table of contents for the new section
     const sectionContent = sections[sectionId] || '';
     const tocItems = extractTableOfContents(sectionContent);
     setCurrentSectionToc(tocItems);
+  };
+
+  const handleDocTypeChange = (docType: DocType) => {
+    setCurrentDocType(docType);
+    setActiveSection('intro'); // Reset to intro when changing doc type
+    updateUrl(docType, 'intro');
   };
 
   const scrollToHeading = (headingId: string) => {
@@ -609,28 +703,64 @@ Please check that:
     }
   };
 
-  // Handle URL query parameters for direct navigation
+  // Handle specific goto parameter for direct navigation to exact section
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const section = searchParams.get('section');
-    const highlight = searchParams.get('highlight');
+    const goto = searchParams.get('goto');
     
-    if (section === 'modals' && !loading) {
+    if (goto === 'deep-dive-the-edit-modal-multiple-users-editing-the-same-task') {
+      // Switch to task-board documentation and modals section immediately
+      setCurrentDocType('task-board');
       setActiveSection('modals');
+      setPendingScroll('edit-modal');
       
-      if (highlight === 'deep-dive') {
-        // Wait for the section to load, then scroll to the Deep Dive
+      // Clean up URL and set final URL
+      const newUrl = window.location.pathname + '#task-board-modals';
+      window.history.replaceState({}, '', newUrl);
+    }
+    
+    if (goto === 'ai-powered-task-extraction') {
+      console.log('Processing AI extraction goto parameter');
+      // Switch to chat-app documentation and ai-extraction section immediately
+      setCurrentDocType('chat-app');
+      setActiveSection('ai-extraction');
+      setPendingScroll('ai-extraction');
+      
+      // Clean up URL and set final URL
+      const newUrl = window.location.pathname + '#chat-app-ai-extraction';
+      window.history.replaceState({}, '', newUrl);
+      console.log('Set state to:', { docType: 'chat-app', section: 'ai-extraction', newUrl });
+    }
+  }, [location.search]);
+
+  // Separate effect to handle scrolling after sections are loaded
+  useEffect(() => {
+    if (pendingScroll && !loading && sections[activeSection]) {
+      if (pendingScroll === 'edit-modal' && 
+          currentDocType === 'task-board' && 
+          activeSection === 'modals' && 
+          sections['modals']) {
+        
+        // Jump directly to Deep Dive position immediately when content is ready
         setTimeout(() => {
-          const deepDiveElement = document.getElementById('deep-dive-the-collaborative-edit-modal-two-layer-conflict-resolution');
-          if (deepDiveElement) {
-            const yOffset = -120; // More offset to account for sticky header and show title clearly
-            const y = deepDiveElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }
-        }, 200);
+          window.scrollTo(0, 800);
+          setPendingScroll(null); // Clear pending scroll
+        }, 100);
+      }
+      
+      if (pendingScroll === 'ai-extraction' && 
+          currentDocType === 'chat-app' && 
+          activeSection === 'ai-extraction' && 
+          sections['ai-extraction']) {
+        
+        // Scroll to top of the AI extraction section
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          setPendingScroll(null); // Clear pending scroll
+        }, 100);
       }
     }
-  }, [location.search, loading]);
+  }, [pendingScroll, loading, sections, currentDocType, activeSection]);
 
   // Update TOC when sections change
   useEffect(() => {
@@ -640,7 +770,7 @@ Please check that:
     }
   }, [sections, activeSection]);
 
-  if (loading) {
+  if (loading || isRefreshing) {
     return (
       <PageContainer>
         <LoadingSpinner />
@@ -649,6 +779,8 @@ Please check that:
   }
 
   const currentSectionContent = sections[activeSection] || '';
+  console.log('Rendering section:', activeSection, 'Content length:', currentSectionContent.length, 'Available sections:', Object.keys(sections));
+  
   const currentNavigation = currentDocType === 'task-board' ? taskBoardNavigation : 
                            currentDocType === 'chat-app' ? chatAppNavigation : overviewNavigation;
   const currentTitle = currentDocType === 'task-board' ? 'Task Board Documentation' : 
@@ -660,19 +792,19 @@ Please check that:
         <DocSwitcher>
           <DocTypeButton
             $active={currentDocType === 'overview'}
-            onClick={() => setCurrentDocType('overview')}
+            onClick={() => handleDocTypeChange('overview')}
           >
             Overview
           </DocTypeButton>
           <DocTypeButton
             $active={currentDocType === 'task-board'}
-            onClick={() => setCurrentDocType('task-board')}
+            onClick={() => handleDocTypeChange('task-board')}
           >
             Task Board
           </DocTypeButton>
           <DocTypeButton
             $active={currentDocType === 'chat-app'}
-            onClick={() => setCurrentDocType('chat-app')}
+            onClick={() => handleDocTypeChange('chat-app')}
           >
             Chat App
           </DocTypeButton>
