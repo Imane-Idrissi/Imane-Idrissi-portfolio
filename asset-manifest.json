@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Imane-Idrissi-portfolio/static/js/main.e30d658a.js",
+    "main.js": "/Imane-Idrissi-portfolio/static/js/main.3bb7dc10.js",
     "index.html": "/Imane-Idrissi-portfolio/index.html",
-    "main.e30d658a.js.map": "/Imane-Idrissi-portfolio/static/js/main.e30d658a.js.map"
+    "main.3bb7dc10.js.map": "/Imane-Idrissi-portfolio/static/js/main.3bb7dc10.js.map"
   },
   "entrypoints": [
-    "static/js/main.e30d658a.js"
+    "static/js/main.3bb7dc10.js"
   ]
 }
