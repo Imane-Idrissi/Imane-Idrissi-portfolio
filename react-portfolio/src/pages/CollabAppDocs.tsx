@@ -686,12 +686,15 @@ export const CollabAppDocs: React.FC = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const content = await response.text();
+        let content = await response.text();
         
         // Check if we're getting HTML instead of markdown
         if (content.includes('<!DOCTYPE html>')) {
           throw new Error('Received HTML instead of markdown - possible routing issue');
         }
+        
+        // Fix image paths for GitHub Pages
+        content = content.replace(/!\[([^\]]*)\]\(\/assets\//g, `![$1](${getAssetPath('/assets/')}`);
         
         const sectionsMap = splitMarkdownIntoSections(content);
         setSections(sectionsMap);
