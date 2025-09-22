@@ -984,24 +984,18 @@ Please check that:
                 <>
                   <h2 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h2>
                   <VideoContainer>
-                    <StyledVideo controls controlsList="nodownload" playsInline webkit-playsinline>
-                      <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mov')} type="video/quicktime" />
-                      Your browser does not support the video tag. 
-                      <a href={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mov')} target="_blank" rel="noopener noreferrer">
-                        Click here to view the video demonstration
-                      </a>
+                    <StyledVideo controls controlsList="nodownload" playsInline>
+                      <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mp4')} type="video/mp4" />
+                      Your browser does not support the video tag.
                     </StyledVideo>
                     <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
                   </VideoContainer>
                 </>
               ) : (
                 <VideoContainer>
-                  <StyledVideo controls controlsList="nodownload" playsInline webkit-playsinline>
-                    <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mov')} type="video/quicktime" />
-                    Your browser does not support the video tag. 
-                    <a href={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mov')} target="_blank" rel="noopener noreferrer">
-                      Click here to view the video demonstration
-                    </a>
+                  <StyledVideo controls controlsList="nodownload" playsInline>
+                    <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mp4')} type="video/mp4" />
+                    Your browser does not support the video tag.
                   </StyledVideo>
                   <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
                 </VideoContainer>
