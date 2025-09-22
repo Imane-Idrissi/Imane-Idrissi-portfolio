@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
+import { ImageModal } from '../components/common/ImageModal';
 import { getAssetPath } from '../utils/assetPath';
 
 const HomeContainer = styled.div`
@@ -27,7 +28,7 @@ const HeroSection = styled.section`
 `;
 
 const HeroTitle = styled.h1`
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1.8rem, 4vw, 4rem);
   font-weight: 700;
   margin-bottom: ${({ theme }) => theme.spacing.md};
   color: ${({ theme }) => theme.colors.text};
@@ -35,14 +36,26 @@ const HeroTitle = styled.h1`
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing.sm};
+  flex-wrap: wrap;
+  line-height: 1.2;
   
   .highlight {
     color: ${({ theme }) => theme.colors.primary};
   }
 
   .wave {
-    font-size: 4rem;
+    font-size: clamp(2rem, 4vw, 4rem);
     animation: wave 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 2rem;
+    gap: ${({ theme }) => theme.spacing.xs};
+    
+    .wave {
+      font-size: 2.5rem;
+    }
   }
 
   @keyframes wave {
@@ -279,6 +292,7 @@ const FeatureImage = styled.div`
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
+  const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
 
   return (
     <HomeContainer>
@@ -316,7 +330,14 @@ export const Home: React.FC = () => {
           <FeatureCard>
             <FeatureTitle>Collaborative Task Editing</FeatureTitle>
             <FeatureImage>
-              <img src={getAssetPath('/assets/projects/collab-app/task-board/edit-modal.webp')} alt="Real-time collaborative task editing with presence indicators and conflict resolution" />
+              <img 
+                src={getAssetPath('/assets/projects/collab-app/task-board/edit-modal.webp')} 
+                alt="Real-time collaborative task editing with presence indicators and conflict resolution"
+                onClick={() => setModalImage({
+                  src: getAssetPath('/assets/projects/collab-app/task-board/edit-modal.webp'),
+                  alt: "Real-time collaborative task editing with presence indicators and conflict resolution"
+                })}
+              />
             </FeatureImage>
             <FeatureDescription>
               Editing tasks simultaneously is inevitable in collaboration: users get locked out or the system can let conflicts occur and then resolve them. 
@@ -340,7 +361,14 @@ export const Home: React.FC = () => {
           <FeatureCard>
             <FeatureTitle>AI-Powered Task Extraction</FeatureTitle>
             <FeatureImage>
-              <img src={getAssetPath('/assets/projects/collab-app/ai-task-extraction.webp')} alt="AI-powered task extraction from chat conversations using Google Gemini" />
+              <img 
+                src={getAssetPath('/assets/projects/collab-app/ai-task-extraction.webp')} 
+                alt="AI-powered task extraction from chat conversations using Google Gemini"
+                onClick={() => setModalImage({
+                  src: getAssetPath('/assets/projects/collab-app/ai-task-extraction.webp'),
+                  alt: "AI-powered task extraction from chat conversations using Google Gemini"
+                })}
+              />
             </FeatureImage>
             <FeatureDescription>
               Traditional chat apps store conversations. This one transforms them. 
@@ -362,6 +390,15 @@ export const Home: React.FC = () => {
           </FeatureCard>
         </FeaturesContainer>
       </FeaturesSection>
+      
+      {modalImage && (
+        <ImageModal
+          src={modalImage.src}
+          alt={modalImage.alt}
+          isOpen={!!modalImage}
+          onClose={() => setModalImage(null)}
+        />
+      )}
     </HomeContainer>
   );
 };
