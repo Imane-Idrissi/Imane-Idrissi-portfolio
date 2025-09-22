@@ -483,7 +483,7 @@ export const StyleAppDocs: React.FC = () => {
   useEffect(() => {
     const loadMarkdownContent = async () => {
       try {
-        const response = await fetch(`/docs/projects/e-commerce/style-app.md?t=${Date.now()}`);
+        const response = await fetch(`${getAssetPath('/docs/projects/e-commerce/style-app.md')}?t=${Date.now()}`);
         
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -514,7 +514,7 @@ Please check that:
 
 **Debug Info:**
 - Current URL: ${window.location.href}
-- Attempting to fetch: /docs/projects/e-commerce/style-app.md`;
+- Attempting to fetch: ${getAssetPath('/docs/projects/e-commerce/style-app.md')}`;
         
         setSections({ 'intro': errorContent } as Record<StyleAppSection, string>);
       } finally {

@@ -680,7 +680,7 @@ export const CollabAppDocs: React.FC = () => {
       }
       
       try {
-        const response = await fetch(`/${filename}?t=${Date.now()}`);
+        const response = await fetch(`${getAssetPath(`/${filename}`)}?t=${Date.now()}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -716,7 +716,7 @@ Please check that:
 
 **Debug Info:**
 - Current URL: ${window.location.href}
-- Attempting to fetch: /${filename}`;
+- Attempting to fetch: ${getAssetPath(`/${filename}`)}`;
         
         setSections({ 'intro': errorContent } as Record<Section, string>);
       } finally {
