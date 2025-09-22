@@ -507,8 +507,18 @@ export const CollabAppDocs: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     const goto = params.get('goto');
     
+    // DEBUG: Log navigation details
+    console.log('🔍 Navigation Debug:', {
+      fullUrl: window.location.href,
+      hash: hash,
+      search: window.location.search,
+      goto: goto,
+      hasSessionStorage: !!sessionStorage.getItem('collabAppDocsState')
+    });
+    
     // Handle goto parameter (existing logic) - this should override everything
     if (goto === 'overview') {
+      console.log('✅ goto=overview detected - going to overview');
       // Clear sessionStorage when using goto to ensure clean state
       sessionStorage.removeItem('collabAppDocsState');
       return { docType: 'overview' as DocType, section: 'intro' as Section };

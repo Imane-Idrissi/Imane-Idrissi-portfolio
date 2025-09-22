@@ -125,7 +125,10 @@ export const Projects: React.FC = () => {
                 <Button 
                   variant="primary" 
                   size="lg"
-                  onClick={() => navigate('/projects/collab-app?goto=overview')}
+                  onClick={() => {
+                    console.log('🚀 Navigating to: /projects/collab-app?goto=overview');
+                    navigate('/projects/collab-app?goto=overview');
+                  }}
                 >
                   View Project →
                 </Button>
