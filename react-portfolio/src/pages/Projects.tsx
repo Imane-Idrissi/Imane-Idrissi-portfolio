@@ -102,6 +102,9 @@ const ButtonGroup = styled.div`
 export const Projects: React.FC = () => {
   const navigate = useNavigate();
   
+  // IMMEDIATE TEST - this should show in console when page loads
+  console.log('🔥 PROJECTS PAGE LOADED - Version 2.0');
+  
   return (
     <ProjectsContainer>
       <ProjectsContent>
