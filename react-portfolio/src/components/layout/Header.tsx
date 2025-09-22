@@ -161,7 +161,11 @@ export const Header: React.FC = () => {
     <HeaderContainer>
       <Nav>
         <Logo to="/">
-          <img src={getAssetPath('/assets/logo.webp')} alt="Imane Idrissi - Full Stack Developer Portfolio" />
+          <img 
+            src={getAssetPath('/assets/logo.webp')} 
+            alt="Imane Idrissi - Full Stack Developer Portfolio"
+            loading="eager"
+          />
           <span>Imane</span>
         </Logo>
         

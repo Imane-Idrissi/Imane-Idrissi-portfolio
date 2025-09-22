@@ -118,6 +118,7 @@ export const Projects: React.FC = () => {
               <img 
                 src={getAssetPath('/assets/projects/collab-app/home.webp')} 
                 alt="CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat"
+                loading="lazy"
                 onClick={() => setModalImage({
                   src: getAssetPath('/assets/projects/collab-app/home.webp'),
                   alt: "CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat"
@@ -150,6 +151,7 @@ export const Projects: React.FC = () => {
               <img 
                 src={getAssetPath('/assets/projects/e-commerce/home.webp')} 
                 alt="Style App - Modern e-commerce platform with Stripe payments and inventory management"
+                loading="lazy"
                 onClick={() => setModalImage({
                   src: getAssetPath('/assets/projects/e-commerce/home.webp'),
                   alt: "Style App - Modern e-commerce platform with Stripe payments and inventory management"

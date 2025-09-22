@@ -333,6 +333,7 @@ export const Home: React.FC = () => {
               <img 
                 src={getAssetPath('/assets/projects/collab-app/task-board/edit-modal.webp')} 
                 alt="Real-time collaborative task editing with presence indicators and conflict resolution"
+                loading="lazy"
                 onClick={() => setModalImage({
                   src: getAssetPath('/assets/projects/collab-app/task-board/edit-modal.webp'),
                   alt: "Real-time collaborative task editing with presence indicators and conflict resolution"
@@ -364,6 +365,7 @@ export const Home: React.FC = () => {
               <img 
                 src={getAssetPath('/assets/projects/collab-app/ai-task-extraction.webp')} 
                 alt="AI-powered task extraction from chat conversations using Google Gemini"
+                loading="lazy"
                 onClick={() => setModalImage({
                   src: getAssetPath('/assets/projects/collab-app/ai-task-extraction.webp'),
                   alt: "AI-powered task extraction from chat conversations using Google Gemini"
