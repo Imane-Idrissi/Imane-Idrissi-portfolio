@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import styled from 'styled-components';
+import { ImageModal } from '../components/common/ImageModal';
 import { getAssetPath } from '../utils/assetPath';
 
 // Import existing styled components from your original file
@@ -586,6 +587,7 @@ export const CollabAppDocs: React.FC = () => {
   const [pendingScroll, setPendingScroll] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
 
   const extractTableOfContents = (markdownContent: string): TocItem[] => {
     const lines = markdownContent.split('\n');
@@ -1020,6 +1022,18 @@ Please check that:
                   const id = children?.toString().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
                   return <h4 id={id} {...props}>{children}</h4>;
                 },
+                img: ({ src, alt, ...props }) => {
+                  const imageSrc = src?.startsWith('/') ? getAssetPath(src) : src;
+                  return (
+                    <img
+                      src={imageSrc}
+                      alt={alt}
+                      onClick={() => setModalImage({ src: imageSrc || '', alt: alt || '' })}
+                      style={{ cursor: 'pointer' }}
+                      {...props}
+                    />
+                  );
+                },
               }}
             >
               {currentSectionContent}
@@ -1042,6 +1056,15 @@ Please check that:
           </RightSidebar>
         )}
       </MainContent>
+      
+      {modalImage && (
+        <ImageModal
+          src={modalImage.src}
+          alt={modalImage.alt}
+          isOpen={!!modalImage}
+          onClose={() => setModalImage(null)}
+        />
+      )}
     </PageContainer>
   );
 };

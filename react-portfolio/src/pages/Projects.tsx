@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
+import { ImageModal } from '../components/common/ImageModal';
 import { getAssetPath } from '../utils/assetPath';
 
 const ProjectsContainer = styled.div`
@@ -101,6 +102,7 @@ const ButtonGroup = styled.div`
 
 export const Projects: React.FC = () => {
   const navigate = useNavigate();
+  const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
   
   return (
     <ProjectsContainer>
@@ -113,7 +115,14 @@ export const Projects: React.FC = () => {
               <ProjectTitle>CollabApp</ProjectTitle>
             </ProjectContent>
             <ProjectImage>
-              <img src={getAssetPath('/assets/projects/collab-app/home.webp')} alt="CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat" />
+              <img 
+                src={getAssetPath('/assets/projects/collab-app/home.webp')} 
+                alt="CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat"
+                onClick={() => setModalImage({
+                  src: getAssetPath('/assets/projects/collab-app/home.webp'),
+                  alt: "CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat"
+                })}
+              />
             </ProjectImage>
             <ProjectContent>
               <ProjectDescription>
@@ -138,7 +147,14 @@ export const Projects: React.FC = () => {
               <ProjectTitle>Style App</ProjectTitle>
             </ProjectContent>
             <ProjectImage>
-              <img src={getAssetPath('/assets/projects/e-commerce/home.webp')} alt="Style App - Modern e-commerce platform with Stripe payments and inventory management" />
+              <img 
+                src={getAssetPath('/assets/projects/e-commerce/home.webp')} 
+                alt="Style App - Modern e-commerce platform with Stripe payments and inventory management"
+                onClick={() => setModalImage({
+                  src: getAssetPath('/assets/projects/e-commerce/home.webp'),
+                  alt: "Style App - Modern e-commerce platform with Stripe payments and inventory management"
+                })}
+              />
             </ProjectImage>
             <ProjectContent>
               <ProjectDescription>
@@ -162,6 +178,15 @@ export const Projects: React.FC = () => {
           </ProjectCard>
         </ProjectGrid>
       </ProjectsContent>
+      
+      {modalImage && (
+        <ImageModal
+          src={modalImage.src}
+          alt={modalImage.alt}
+          isOpen={!!modalImage}
+          onClose={() => setModalImage(null)}
+        />
+      )}
     </ProjectsContainer>
   );
 };

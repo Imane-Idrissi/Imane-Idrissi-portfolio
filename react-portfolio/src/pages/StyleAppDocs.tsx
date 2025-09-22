@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import styled from 'styled-components';
+import { ImageModal } from '../components/common/ImageModal';
 import { getAssetPath } from '../utils/assetPath';
 
 // Import existing styled components from CollabAppDocs
@@ -434,6 +435,7 @@ export const StyleAppDocs: React.FC = () => {
   const [currentSectionToc, setCurrentSectionToc] = useState<TocItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
 
   const extractTableOfContents = (markdownContent: string): TocItem[] => {
     const lines = markdownContent.split('\n');
@@ -641,6 +643,18 @@ Please check that:
                 },
                 h2: ({ children, ...props }) => <h2 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h2>,
                 h3: ({ children, ...props }) => <h3 id={children?.toString().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')} {...props}>{children}</h3>,
+                img: ({ src, alt, ...props }) => {
+                  const imageSrc = src?.startsWith('/') ? getAssetPath(src) : src;
+                  return (
+                    <img
+                      src={imageSrc}
+                      alt={alt}
+                      onClick={() => setModalImage({ src: imageSrc || '', alt: alt || '' })}
+                      style={{ cursor: 'pointer' }}
+                      {...props}
+                    />
+                  );
+                },
               }}
             >
               {currentSectionContent}
@@ -663,6 +677,15 @@ Please check that:
           </RightSidebar>
         )}
       </MainContent>
+      
+      {modalImage && (
+        <ImageModal
+          src={modalImage.src}
+          alt={modalImage.alt}
+          isOpen={!!modalImage}
+          onClose={() => setModalImage(null)}
+        />
+      )}
     </PageContainer>
   );
 };
