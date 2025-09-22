@@ -518,6 +518,7 @@ export const CollabAppDocs: React.FC = () => {
     
     // Parse hash format: doctype-section (e.g., task-board-modals)
     if (hash) {
+      console.log('Parsing hash:', hash); // Debug log
       const parts = hash.split('-');
       if (parts.length >= 2) {
         const docType = parts[0] as DocType;
@@ -826,6 +827,38 @@ Please check that:
       setCurrentSectionToc(tocItems);
     }
   }, [sections, activeSection]);
+
+  // Handle hash changes (e.g., from page refresh or back/forward navigation)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      console.log('Hash changed to:', hash); // Debug log
+      if (hash) {
+        const parts = hash.split('-');
+        if (parts.length >= 2) {
+          const docType = parts[0] as DocType;
+          const section = parts.slice(1).join('-') as Section;
+          
+          // Validate the parsed values
+          if (['overview', 'task-board', 'chat-app'].includes(docType)) {
+            console.log('Setting docType:', docType, 'section:', section); // Debug log
+            setCurrentDocType(docType);
+            setActiveSection(section);
+          }
+        }
+      }
+    };
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Also run on mount to handle direct navigation
+    handleHashChange();
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
 
   if (loading || isRefreshing) {
     return (
