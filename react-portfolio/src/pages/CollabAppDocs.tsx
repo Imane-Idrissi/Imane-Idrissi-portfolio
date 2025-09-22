@@ -770,6 +770,10 @@ Please check that:
     setActiveSection(sectionId);
     updateUrl(currentDocType, sectionId);
     setIsMobileMenuOpen(false); // Close mobile menu
+    
+    // Scroll to top when switching sections
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     // Update table of contents for the new section
     const sectionContent = sections[sectionId] || '';
     const tocItems = extractTableOfContents(sectionContent);
@@ -783,6 +787,10 @@ Please check that:
     setActiveSection('intro'); // Reset to intro when changing doc type
     updateUrl(docType, 'intro');
     setIsMobileMenuOpen(false); // Close mobile sidebar when navigating
+    
+    // Scroll to top when changing document type
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     // Save state to sessionStorage
     sessionStorage.setItem('collabAppDocsState', JSON.stringify({ docType, section: 'intro' }));
   };

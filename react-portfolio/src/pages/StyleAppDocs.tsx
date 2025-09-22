@@ -533,6 +533,10 @@ Please check that:
   const handleSectionClick = (sectionId: StyleAppSection) => {
     setActiveSection(sectionId);
     setIsMobileMenuOpen(false); // Close mobile menu
+    
+    // Scroll to top when switching sections
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     // Update table of contents for the new section
     const sectionContent = sections[sectionId] || '';
     const tocItems = extractTableOfContents(sectionContent);
