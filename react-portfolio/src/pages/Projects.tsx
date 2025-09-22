@@ -125,7 +125,7 @@ export const Projects: React.FC = () => {
                 <Button 
                   variant="primary" 
                   size="lg"
-                  onClick={() => navigate('/projects/collab-app')}
+                  onClick={() => navigate('/projects/collab-app?goto=overview')}
                 >
                   View Project →
                 </Button>
@@ -150,7 +150,10 @@ export const Projects: React.FC = () => {
                 <Button 
                   variant="primary" 
                   size="lg"
-                  onClick={() => navigate('/projects/e-commerce')}
+                  onClick={() => {
+                    navigate('/projects/e-commerce');
+                    setTimeout(() => window.scrollTo(0, 0), 100);
+                  }}
                 >
                   View Project →
                 </Button>

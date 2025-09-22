@@ -34,7 +34,14 @@ function ScrollToTop() {
 function App() {
   useEffect(() => {
     window.history.scrollRestoration = 'manual';
-    window.scrollTo(0, 0);
+    
+    // Force scroll to top on page load/refresh
+    const scrollToTop = () => window.scrollTo(0, 0);
+    scrollToTop();
+    
+    // Also scroll to top after a short delay to override browser scroll restoration
+    setTimeout(scrollToTop, 0);
+    setTimeout(scrollToTop, 100);
   }, []);
 
   return (
