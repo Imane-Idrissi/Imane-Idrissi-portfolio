@@ -985,7 +985,7 @@ Please check that:
                   <h2 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h2>
                   <VideoContainer>
                     <StyledVideo controls controlsList="nodownload" playsInline>
-                      <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mp4')} type="video/mp4" />
+                      <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction-video.mp4')} type="video/mp4" />
                       Your browser does not support the video tag.
                     </StyledVideo>
                     <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
@@ -994,7 +994,7 @@ Please check that:
               ) : (
                 <VideoContainer>
                   <StyledVideo controls controlsList="nodownload" playsInline>
-                    <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mp4')} type="video/mp4" />
+                    <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction-video.mp4')} type="video/mp4" />
                     Your browser does not support the video tag.
                   </StyledVideo>
                   <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
