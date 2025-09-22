@@ -984,7 +984,7 @@ Please check that:
                 <>
                   <h2 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h2>
                   <VideoContainer>
-                    <StyledVideo controls controlsList="nodownload" playsInline webkit-playsinline="true">
+                    <StyledVideo controls controlsList="nodownload" playsInline webkit-playsinline="true" preload="none">
                       <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction-video.mp4')} type="video/mp4" />
                       Your browser does not support the video tag.
                     </StyledVideo>

@@ -622,7 +622,7 @@ Please check that:
                 <>
                   <h1 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h1>
                   <VideoContainer>
-                    <StyledVideo controls controlsList="nodownload" playsInline webkit-playsinline="true">
+                    <StyledVideo controls controlsList="nodownload" playsInline webkit-playsinline="true" preload="none">
                       <source src={getAssetPath('/assets/projects/e-commerce/demo.mp4')} type="video/mp4" />
                       Your browser does not support the video tag.
                     </StyledVideo>
