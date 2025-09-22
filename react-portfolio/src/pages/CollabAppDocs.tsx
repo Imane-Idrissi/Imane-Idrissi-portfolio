@@ -516,9 +516,11 @@ export const CollabAppDocs: React.FC = () => {
       return { docType: 'chat-app' as DocType, section: 'ai-extraction' as Section };
     }
     
+    // Check if we're on the collab-app route - if so, default to task-board instead of overview
+    const isCollabAppRoute = window.location.pathname.includes('/projects/collab-app');
+    
     // Parse hash format: doctype-section (e.g., task-board-modals)
     if (hash) {
-      console.log('Parsing hash:', hash); // Debug log
       const parts = hash.split('-');
       if (parts.length >= 2) {
         const docType = parts[0] as DocType;
@@ -536,12 +538,36 @@ export const CollabAppDocs: React.FC = () => {
           if (validSections[docType].includes(section)) {
             return { docType, section };
           } else {
+            // If section is invalid but docType is valid, default to intro for that docType
+            return { docType, section: 'intro' as Section };
           }
+        }
+      } else if (parts.length === 1) {
+        // Handle case where only docType is in hash (e.g., #task-board)
+        const docType = parts[0] as DocType;
+        if (['overview', 'task-board', 'chat-app'].includes(docType)) {
+          return { docType, section: 'intro' as Section };
         }
       }
     }
     
-    return { docType: 'overview' as DocType, section: 'intro' as Section };
+    // Try to restore from sessionStorage if available
+    const savedState = sessionStorage.getItem('collabAppDocsState');
+    if (savedState) {
+      try {
+        const parsed = JSON.parse(savedState);
+        if (parsed.docType && parsed.section) {
+          return { docType: parsed.docType as DocType, section: parsed.section as Section };
+        }
+      } catch (e) {
+        // Ignore invalid sessionStorage data
+      }
+    }
+    
+    // Smart default: if we're on collab-app route, default to task-board, otherwise overview
+    return isCollabAppRoute 
+      ? { docType: 'task-board' as DocType, section: 'intro' as Section }
+      : { docType: 'overview' as DocType, section: 'intro' as Section };
   };
   
   const initialState = getInitialStateFromUrl();
@@ -739,6 +765,8 @@ Please check that:
     const sectionContent = sections[sectionId] || '';
     const tocItems = extractTableOfContents(sectionContent);
     setCurrentSectionToc(tocItems);
+    // Save state to sessionStorage
+    sessionStorage.setItem('collabAppDocsState', JSON.stringify({ docType: currentDocType, section: sectionId }));
   };
 
   const handleDocTypeChange = (docType: DocType) => {
@@ -746,6 +774,8 @@ Please check that:
     setActiveSection('intro'); // Reset to intro when changing doc type
     updateUrl(docType, 'intro');
     setIsMobileMenuOpen(false); // Close mobile sidebar when navigating
+    // Save state to sessionStorage
+    sessionStorage.setItem('collabAppDocsState', JSON.stringify({ docType, section: 'intro' }));
   };
 
   const scrollToHeading = (headingId: string) => {
@@ -826,7 +856,6 @@ Please check that:
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1);
-      console.log('Hash changed to:', hash); // Debug log
       if (hash) {
         const parts = hash.split('-');
         if (parts.length >= 2) {
@@ -835,9 +864,10 @@ Please check that:
           
           // Validate the parsed values
           if (['overview', 'task-board', 'chat-app'].includes(docType)) {
-            console.log('Setting docType:', docType, 'section:', section); // Debug log
             setCurrentDocType(docType);
             setActiveSection(section);
+            // Save state to sessionStorage when hash changes
+            sessionStorage.setItem('collabAppDocsState', JSON.stringify({ docType, section }));
           }
         }
       }

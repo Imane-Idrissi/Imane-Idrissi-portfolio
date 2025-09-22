@@ -8,6 +8,7 @@ import { Home } from './pages/Home';
 import { Projects } from './pages/Projects';
 import { CollabAppDocs } from './pages/CollabAppDocs';
 import { StyleAppDocs } from './pages/StyleAppDocs';
+import { NotFound } from './pages/NotFound';
 import styled from 'styled-components';
 
 const AppContainer = styled.div`
@@ -33,6 +34,7 @@ function App() {
               <Route path="/projects" element={<Projects />} />
               <Route path="/projects/collab-app" element={<CollabAppDocs />} />
               <Route path="/projects/e-commerce" element={<StyleAppDocs />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </MainContent>
           <Footer />
