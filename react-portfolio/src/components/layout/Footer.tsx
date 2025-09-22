@@ -18,6 +18,10 @@ const FooterContainer = styled.footer`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   padding: ${({ theme }) => theme.spacing.xl} 0;
   margin-top: auto;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
+    padding-bottom: 80px; /* Add extra padding on mobile when navigation button might appear */
+  }
 `;
 
 const FooterContent = styled.div`
@@ -100,7 +104,7 @@ const Toast = styled.div<{ $show: boolean }>`
   transform: translateX(${({ $show }) => $show ? '0' : '400px'});
   opacity: ${({ $show }) => $show ? '1' : '0'};
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 1002;
   
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     bottom: 20px;
