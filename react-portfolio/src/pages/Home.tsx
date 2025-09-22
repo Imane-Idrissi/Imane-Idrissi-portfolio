@@ -287,9 +287,9 @@ export const Home: React.FC = () => {
           Hi, I'm <span className="highlight">Imane</span>
         </HeroTitle>
         <HeroDescription>
-          A passionate full-stack developer crafting exceptional web experiences 
-          with modern technologies. I love building scalable applications and 
-          solving complex problems through clean, efficient code.
+          I'm a full-stack developer who believes technology should serve people and create real impact. 
+          Complexity alone is never the goal. Beyond coding, I love building lasting skills, 
+          like learning strategies that let me tackle anything I need anytime.
         </HeroDescription>
         
         <DocumentationCTA>

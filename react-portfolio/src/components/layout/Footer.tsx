@@ -152,7 +152,7 @@ export const Footer: React.FC = () => {
             </ContactLink>
             
             <ContactLink 
-              href="https://github.com/imane-idrissi" 
+              href="https://github.com/Imane-Idrissi" 
               target="_blank" 
               rel="noopener noreferrer"
             >
@@ -164,6 +164,10 @@ export const Footer: React.FC = () => {
         
         <Copyright>
           © {new Date().getFullYear()} Imane Idrissi. Made with love 💜
+          <br />
+          <small>
+            Logo by <a href="https://www.freepik.com/icon/text_16791597" target="_blank" rel="noopener noreferrer" style={{color: 'inherit', textDecoration: 'underline'}}>Pixa_icons</a> from Freepik
+          </small>
         </Copyright>
       </FooterContent>
       
