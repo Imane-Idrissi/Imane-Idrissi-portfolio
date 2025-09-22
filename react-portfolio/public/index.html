@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#3B82F6" />
     
+    <script>
+      // Disable scroll restoration immediately
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      // Scroll to top on page load
+      window.addEventListener('beforeunload', function () {
+        window.scrollTo(0, 0);
+      });
+    </script>
+    
     <!-- Primary Meta Tags -->
     <title>Imane Idrissi | Full Stack Developer</title>
     <meta name="title" content="Imane Idrissi | Full Stack Developer" />
