@@ -516,9 +516,6 @@ export const CollabAppDocs: React.FC = () => {
       return { docType: 'chat-app' as DocType, section: 'ai-extraction' as Section };
     }
     
-    // Check if we're on the collab-app route - if so, default to task-board instead of overview
-    const isCollabAppRoute = window.location.pathname.includes('/projects/collab-app');
-    
     // Parse hash format: doctype-section (e.g., task-board-modals)
     if (hash) {
       const parts = hash.split('-');
@@ -564,10 +561,8 @@ export const CollabAppDocs: React.FC = () => {
       }
     }
     
-    // Smart default: if we're on collab-app route, default to task-board, otherwise overview
-    return isCollabAppRoute 
-      ? { docType: 'task-board' as DocType, section: 'intro' as Section }
-      : { docType: 'overview' as DocType, section: 'intro' as Section };
+    // Smart default: always default to overview
+    return { docType: 'overview' as DocType, section: 'intro' as Section };
   };
   
   const initialState = getInitialStateFromUrl();
