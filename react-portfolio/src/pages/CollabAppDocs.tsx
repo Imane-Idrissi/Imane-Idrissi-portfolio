@@ -508,6 +508,10 @@ export const CollabAppDocs: React.FC = () => {
     const goto = params.get('goto');
     
     // Handle goto parameter (existing logic)
+    if (goto === 'overview') {
+      return { docType: 'overview' as DocType, section: 'intro' as Section };
+    }
+    
     if (goto === 'deep-dive-the-edit-modal-multiple-users-editing-the-same-task') {
       return { docType: 'task-board' as DocType, section: 'modals' as Section };
     }
@@ -792,6 +796,16 @@ Please check that:
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const goto = searchParams.get('goto');
+    
+    if (goto === 'overview') {
+      // Switch to overview documentation immediately
+      setCurrentDocType('overview');
+      setActiveSection('intro');
+      
+      // Clean up URL and set final URL
+      const newUrl = window.location.pathname + '#overview-intro';
+      window.history.replaceState({}, '', newUrl);
+    }
     
     if (goto === 'deep-dive-the-edit-modal-multiple-users-editing-the-same-task') {
       // Switch to task-board documentation and modals section immediately
