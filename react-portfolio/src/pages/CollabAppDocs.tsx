@@ -548,9 +548,15 @@ export const CollabAppDocs: React.FC = () => {
       }
     }
     
-    // Try to restore from sessionStorage if available
+    // If no hash and no goto parameter, clear sessionStorage and default to overview
+    if (!hash && !goto) {
+      sessionStorage.removeItem('collabAppDocsState');
+      return { docType: 'overview' as DocType, section: 'intro' as Section };
+    }
+    
+    // Try to restore from sessionStorage if available (only when hash is present)
     const savedState = sessionStorage.getItem('collabAppDocsState');
-    if (savedState) {
+    if (savedState && hash) {
       try {
         const parsed = JSON.parse(savedState);
         if (parsed.docType && parsed.section) {

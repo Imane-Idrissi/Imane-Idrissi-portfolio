@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { Header } from './components/layout/Header';
@@ -21,15 +21,27 @@ const MainContent = styled.main`
   flex: 1;
 `;
 
+function ScrollToTop() {
+  const location = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+  
+  return null;
+}
+
 function App() {
   useEffect(() => {
     window.history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
   }, []);
 
   return (
     <ThemeProvider>
       <GlobalStyles />
       <Router>
+        <ScrollToTop />
         <AppContainer>
           <Header />
           <MainContent>
