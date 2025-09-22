@@ -700,13 +700,7 @@ export const CollabAppDocs: React.FC = () => {
         const sectionsMap = splitMarkdownIntoSections(content);
         setSections(sectionsMap);
         
-        // Only reset to intro section when changing doc type manually, not on initial load
-        if (!sections || Object.keys(sections).length === 0) {
-          // This is initial load, don't override the initial state from URL
-        } else {
-          // This is a doc type change, reset to intro
-          setActiveSection('intro');
-        }
+        // Don't automatically reset to intro - let the hash handler manage the active section
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         const errorContent = `# Error Loading Documentation
