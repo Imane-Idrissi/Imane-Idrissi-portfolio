@@ -126,7 +126,8 @@ export const Projects: React.FC = () => {
                   variant="primary" 
                   size="lg"
                   onClick={() => {
-                    console.log('🚀 Navigating to: /projects/collab-app?goto=overview');
+                    console.log('🚀 Button clicked! Navigating to: /projects/collab-app?goto=overview');
+                    alert('Navigation triggered!'); // This will show if onClick fires
                     navigate('/projects/collab-app?goto=overview');
                   }}
                 >
