@@ -160,7 +160,7 @@ export const Header: React.FC = () => {
     <HeaderContainer>
       <Nav>
         <Logo to="/">
-          <img src="/assets/logo.webp" alt="Imane Idrissi - Full Stack Developer Portfolio" />
+          <img src={`${process.env.PUBLIC_URL}/assets/logo.webp`} alt="Imane Idrissi - Full Stack Developer Portfolio" />
           <span>Imane</span>
         </Logo>
         
