@@ -102,9 +102,6 @@ const ButtonGroup = styled.div`
 export const Projects: React.FC = () => {
   const navigate = useNavigate();
   
-  // IMMEDIATE TEST - this should show in console when page loads
-  console.log('🔥 PROJECTS PAGE LOADED - Version 2.0');
-  
   return (
     <ProjectsContainer>
       <ProjectsContent>
@@ -128,11 +125,7 @@ export const Projects: React.FC = () => {
                 <Button 
                   variant="primary" 
                   size="lg"
-                  onClick={() => {
-                    console.log('🚀 Button clicked! Navigating to: /projects/collab-app?goto=overview');
-                    alert('Navigation triggered!'); // This will show if onClick fires
-                    navigate('/projects/collab-app?goto=overview');
-                  }}
+                  onClick={() => navigate('/projects/collab-app?goto=overview')}
                 >
                   View Project →
                 </Button>
