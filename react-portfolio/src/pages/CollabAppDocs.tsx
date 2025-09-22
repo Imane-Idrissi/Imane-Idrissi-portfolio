@@ -507,8 +507,10 @@ export const CollabAppDocs: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     const goto = params.get('goto');
     
-    // Handle goto parameter (existing logic)
+    // Handle goto parameter (existing logic) - this should override everything
     if (goto === 'overview') {
+      // Clear sessionStorage when using goto to ensure clean state
+      sessionStorage.removeItem('collabAppDocsState');
       return { docType: 'overview' as DocType, section: 'intro' as Section };
     }
     
@@ -558,9 +560,9 @@ export const CollabAppDocs: React.FC = () => {
       return { docType: 'overview' as DocType, section: 'intro' as Section };
     }
     
-    // Try to restore from sessionStorage if available (only when hash is present)
+    // Try to restore from sessionStorage if available (only when hash is present and no goto parameter)
     const savedState = sessionStorage.getItem('collabAppDocsState');
-    if (savedState && hash) {
+    if (savedState && hash && !goto) {
       try {
         const parsed = JSON.parse(savedState);
         if (parsed.docType && parsed.section) {
