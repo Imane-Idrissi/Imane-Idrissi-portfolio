@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
+import { getAssetPath } from '../utils/assetPath';
 
 const ProjectsContainer = styled.div`
   min-height: calc(100vh - 70px);
@@ -112,7 +113,7 @@ export const Projects: React.FC = () => {
               <ProjectTitle>CollabApp</ProjectTitle>
             </ProjectContent>
             <ProjectImage>
-              <img src="/assets/projects/collab-app/home.webp" alt="CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat" />
+              <img src={getAssetPath('/assets/projects/collab-app/home.webp')} alt="CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat" />
             </ProjectImage>
             <ProjectContent>
               <ProjectDescription>
@@ -137,7 +138,7 @@ export const Projects: React.FC = () => {
               <ProjectTitle>Style App</ProjectTitle>
             </ProjectContent>
             <ProjectImage>
-              <img src="/assets/projects/e-commerce/home.webp" alt="Style App - Modern e-commerce platform with Stripe payments and inventory management" />
+              <img src={getAssetPath('/assets/projects/e-commerce/home.webp')} alt="Style App - Modern e-commerce platform with Stripe payments and inventory management" />
             </ProjectImage>
             <ProjectContent>
               <ProjectDescription>

@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import styled from 'styled-components';
+import { getAssetPath } from '../utils/assetPath';
 
 // Import existing styled components from CollabAppDocs
 const PageContainer = styled.div`
@@ -607,7 +608,7 @@ Please check that:
                   <h1 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h1>
                   <VideoContainer>
                     <StyledVideo controls controlsList="nodownload">
-                      <source src="/assets/projects/e-commerce/demo.mp4" type="video/mp4" />
+                      <source src={getAssetPath('/assets/projects/e-commerce/demo.mp4')} type="video/mp4" />
                       Your browser does not support the video tag.
                     </StyledVideo>
                     <VideoCaption>demo of the Style e-commerce platform</VideoCaption>
@@ -616,7 +617,7 @@ Please check that:
               ) : (
                 <VideoContainer>
                   <StyledVideo controls controlsList="nodownload">
-                    <source src="/assets/projects/e-commerce/demo.mp4" type="video/mp4" />
+                    <source src={getAssetPath('/assets/projects/e-commerce/demo.mp4')} type="video/mp4" />
                     Your browser does not support the video tag.
                   </StyledVideo>
                   <VideoCaption>demo of the Style e-commerce platform</VideoCaption>

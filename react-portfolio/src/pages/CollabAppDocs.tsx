@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import styled from 'styled-components';
+import { getAssetPath } from '../utils/assetPath';
 
 // Import existing styled components from your original file
 const PageContainer = styled.div`
@@ -897,8 +898,8 @@ Please check that:
                   <h2 id={title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}>{title}</h2>
                   <VideoContainer>
                     <StyledVideo controls controlsList="nodownload">
-                      <source src="/assets/projects/collab-app/videos/task-ai-extraction.mov" type="video/quicktime" />
-                      <source src="/assets/projects/collab-app/videos/task-ai-extraction.mov" type="video/mp4" />
+                      <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mov')} type="video/quicktime" />
+                      <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mov')} type="video/mp4" />
                       Your browser does not support the video tag.
                     </StyledVideo>
                     <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>
@@ -907,8 +908,8 @@ Please check that:
               ) : (
                 <VideoContainer>
                   <StyledVideo controls controlsList="nodownload">
-                    <source src="/assets/projects/collab-app/videos/task-ai-extraction.mov" type="video/quicktime" />
-                    <source src="/assets/projects/collab-app/videos/task-ai-extraction.mov" type="video/mp4" />
+                    <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mov')} type="video/quicktime" />
+                    <source src={getAssetPath('/assets/projects/collab-app/videos/task-ai-extraction.mov')} type="video/mp4" />
                     Your browser does not support the video tag.
                   </StyledVideo>
                   <VideoCaption>Live demonstration of AI analyzing chat conversations and extracting actionable tasks with confidence scoring</VideoCaption>

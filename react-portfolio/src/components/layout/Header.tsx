@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
+import { getAssetPath } from '../../utils/assetPath';
 
 const HeaderContainer = styled.header`
   position: sticky;
@@ -160,7 +161,7 @@ export const Header: React.FC = () => {
     <HeaderContainer>
       <Nav>
         <Logo to="/">
-          <img src={`${process.env.PUBLIC_URL}/assets/logo.webp`} alt="Imane Idrissi - Full Stack Developer Portfolio" />
+          <img src={getAssetPath('/assets/logo.webp')} alt="Imane Idrissi - Full Stack Developer Portfolio" />
           <span>Imane</span>
         </Logo>
         

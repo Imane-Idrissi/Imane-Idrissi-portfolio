@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
+import { getAssetPath } from '../utils/assetPath';
 
 const HomeContainer = styled.div`
   min-height: calc(100vh - 70px);
@@ -315,7 +316,7 @@ export const Home: React.FC = () => {
           <FeatureCard>
             <FeatureTitle>Collaborative Task Editing</FeatureTitle>
             <FeatureImage>
-              <img src="/assets/projects/collab-app/task-board/edit-modal.webp" alt="Real-time collaborative task editing with presence indicators and conflict resolution" />
+              <img src={getAssetPath('/assets/projects/collab-app/task-board/edit-modal.webp')} alt="Real-time collaborative task editing with presence indicators and conflict resolution" />
             </FeatureImage>
             <FeatureDescription>
               Editing tasks simultaneously is inevitable in collaboration: users get locked out or the system can let conflicts occur and then resolve them. 
@@ -339,7 +340,7 @@ export const Home: React.FC = () => {
           <FeatureCard>
             <FeatureTitle>AI-Powered Task Extraction</FeatureTitle>
             <FeatureImage>
-              <img src="/assets/projects/collab-app/ai-task-extraction.webp" alt="AI-powered task extraction from chat conversations using Google Gemini" />
+              <img src={getAssetPath('/assets/projects/collab-app/ai-task-extraction.webp')} alt="AI-powered task extraction from chat conversations using Google Gemini" />
             </FeatureImage>
             <FeatureDescription>
               Traditional chat apps store conversations. This one transforms them. 
