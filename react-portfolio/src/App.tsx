@@ -24,7 +24,7 @@ function App() {
   return (
     <ThemeProvider>
       <GlobalStyles />
-      <Router basename="/Imane-Idrissi-portfolio">
+      <Router>
         <AppContainer>
           <Header />
           <MainContent>
