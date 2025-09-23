@@ -18,32 +18,31 @@ A collaborative platform that combines a Kanban board with a chat app. What make
 
 #### Featured Capabilities:
 
-<table>
-  <tr>
-    <td width="50%">
-      <h4>📋 Kanban Task Board</h4>
-      <img src="public/assets/projects/collab-app/task-board/task-board-full-view.webp" alt="Kanban Task Board" />
-      <p>Visual task management with drag-and-drop functionality across customizable columns.</p>
-    </td>
-    <td width="50%">
-      <h4>💬 Integrated Chat System</h4>
-      <img src="public/assets/projects/collab-app/chat-view.webp" alt="Chat View" />
-      <p>Real-time team communication seamlessly integrated with task management.</p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
-      <h4>🤖 AI Task Extraction</h4>
-      <img src="public/assets/projects/collab-app/ai-task-extraction.webp" alt="AI Task Extraction" />
-      <p>Automatically converts chat conversations into actionable tasks with confidence scoring.</p>
-    </td>
-    <td width="50%">
-      <h4>📝 Rich Modal System</h4>
-      <img src="public/assets/projects/collab-app/task-board/create-task-modal.webp" alt="Task Modals" />
-      <p>Comprehensive task creation and editing with intuitive modal interfaces.</p>
-    </td>
-  </tr>
-</table>
+### 🤝 Collaborative Task Editing
+
+<img src="public/assets/projects/collab-app/task-board/edit-modal.webp" alt="Collaborative Task Editing" width="100%" />
+
+Editing tasks simultaneously is inevitable in collaboration: users get locked out or the system can let conflicts occur and then resolve them. I designed a two-layer solution that addresses conflicts at both the human and technical levels.
+
+**Key Benefits:**
+- **Real-time coordination** - Floating chat automatically appears when multiple users edit the same task
+- **Presence detection** - WebSockets broadcast who's editing what in real-time
+- **Conflict resolution** - Optimistic locking with version control for infrastructure-level resolution
+- **Human negotiation** - Editors can coordinate: "I'll update the description, you handle assignees"
+
+---
+
+### 🤖 AI-Powered Task Extraction
+
+<img src="public/assets/projects/collab-app/ai-task-extraction.webp" alt="AI-Powered Task Extraction" width="100%" />
+
+Traditional chat apps store conversations. This one transforms them. Our AI analyzes team discussions and automatically suggests actionable tasks with confidence scoring, bridging the gap between communication and project management.
+
+**Key Benefits:**
+- **Smart extraction** - AI extracts actionable items from natural conversations
+- **Confidence scoring** - Tasks are suggested with confidence scores and AI reasoning
+- **Deduplication** - Smart prevention of similar tasks being created
+- **One-click creation** - Direct task creation from chat conversations
 
 [View Live Demo](https://imaneidrissi.com/projects/collab-app) | [Documentation](https://imaneidrissi.com/projects/collab-app#chat-app-ai-extraction)
 
