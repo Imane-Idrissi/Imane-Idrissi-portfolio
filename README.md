@@ -12,7 +12,7 @@ I believe technology should serve people and create real impact. Complexity alon
 
 ### CollabApp - Collaborative Task Management Platform
 
-![CollabApp Homepage](react-portfolio/src/assets/section4-images/Screenshot%202024-07-21%20at%2015.01.25.webp)
+![CollabApp Homepage](react-portfolio/public/assets/projects/collab-app/home.webp)
 
 A collaborative platform that combines a Kanban board with a chat app. What makes it different is an AI feature that turns group conversations into actionable tasks that are registered within the task board.
 
@@ -20,7 +20,7 @@ A collaborative platform that combines a Kanban board with a chat app. What make
 
 ### 🤝 Collaborative Task Editing
 
-<img src="react-portfolio/src/assets/section4-images/Screenshot%202024-07-21%20at%2015.03.52.webp" alt="Collaborative Task Editing" width="100%" />
+<img src="react-portfolio/public/assets/collab-app/task-board/edit-modal.webp" alt="Collaborative Task Editing" width="100%" />
 
 Editing tasks simultaneously is inevitable in collaboration: users get locked out or the system can let conflicts occur and then resolve them. I designed a two-layer solution that addresses conflicts at both the human and technical levels.
 
@@ -34,7 +34,7 @@ Editing tasks simultaneously is inevitable in collaboration: users get locked ou
 
 ### 🤖 AI-Powered Task Extraction
 
-<img src="react-portfolio/src/assets/section4-images/Screenshot%202024-07-21%20at%2016.32.35.webp" alt="AI-Powered Task Extraction" width="100%" />
+<img src="react-portfolio/public/assets/collab-app/ai-task-extraction.webp" alt="AI-Powered Task Extraction" width="100%" />
 
 Traditional chat apps store conversations. This one transforms them. Our AI analyzes team discussions and automatically suggests actionable tasks with confidence scoring, bridging the gap between communication and project management.
 
@@ -48,7 +48,7 @@ Traditional chat apps store conversations. This one transforms them. Our AI anal
 
 ### Style App - E-commerce Platform
 
-![Style App Homepage](react-portfolio/src/assets/e-commerce/Screenshot%202024-07-22%20at%2012.04.22.webp)
+![Style App Homepage](react-portfolio/public/assets/e-commerce/home.webp)
 
 An online store where users can browse women's, men's, and kids' categories with subcategories. Shoppers can select items with the right size and quantity, add them to the cart, and complete their purchase through Stripe payments.
 
