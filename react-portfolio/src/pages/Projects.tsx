@@ -139,6 +139,13 @@ export const Projects: React.FC = () => {
                 >
                   View Project →
                 </Button>
+                <Button 
+                  variant="secondary" 
+                  size="lg"
+                  onClick={() => window.open('https://github.com/Imane-Idrissi/collab-app', '_blank')}
+                >
+                  GitHub →
+                </Button>
               </ButtonGroup>
             </ProjectContent>
           </ProjectCard>
@@ -174,6 +181,13 @@ export const Projects: React.FC = () => {
                   }}
                 >
                   View Project →
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  size="lg"
+                  onClick={() => window.open('https://github.com/Imane-Idrissi/Style-e-commerce-app', '_blank')}
+                >
+                  GitHub →
                 </Button>
               </ButtonGroup>
             </ProjectContent>
