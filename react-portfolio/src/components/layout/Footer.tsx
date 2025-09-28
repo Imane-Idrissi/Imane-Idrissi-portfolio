@@ -172,6 +172,10 @@ export const Footer: React.FC = () => {
           <small>
             Logo by <a href="https://www.freepik.com/icon/text_16791597" target="_blank" rel="noopener noreferrer" style={{color: 'inherit', textDecoration: 'underline'}}>Pixa_icons</a> from Freepik
           </small>
+          <br />
+          <small style={{marginTop: '8px', display: 'block'}}>
+            This site uses analytics to improve user experience. No personal data is collected.
+          </small>
         </Copyright>
       </FooterContent>
       
