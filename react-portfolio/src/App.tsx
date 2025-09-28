@@ -7,9 +7,12 @@ import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
 import { Projects } from './pages/Projects';
 import { CollabAppDocs } from './pages/CollabAppDocs';
+import posthog from './lib/posthog';
 import { StyleAppDocs } from './pages/StyleAppDocs';
 import { NotFound } from './pages/NotFound';
 import styled from 'styled-components';
+
+// PostHog is imported and initialized in lib/posthog.ts
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -26,13 +29,36 @@ function ScrollToTop() {
   
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Track page navigation with meaningful names
+    const pageNames: Record<string, string> = {
+      '/': 'homepage_viewed',
+      '/projects': 'projects_page_viewed', 
+      '/projects/collab-app': 'collab_project_viewed',
+      '/projects/e-commerce': 'ecommerce_project_viewed'
+    };
+    
+    const eventName = pageNames[location.pathname] || 'unknown_page_viewed';
+    
+    posthog.capture(eventName, {
+      path: location.pathname,
+      page_title: document.title,
+      referrer: document.referrer
+    });
   }, [location]);
   
   return null;
 }
 
 function App() {
+  
   useEffect(() => {
+    // Track portfolio app initialization
+    posthog.capture('portfolio_loaded', {
+      timestamp: new Date().toISOString(),
+      page: 'app_start'
+    });
+    
     window.history.scrollRestoration = 'manual';
     
     // Force scroll to top on page load/refresh
@@ -47,7 +73,10 @@ function App() {
   return (
     <ThemeProvider>
       <GlobalStyles />
-      <Router>
+      <Router future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}>
         <ScrollToTop />
         <AppContainer>
           <Header />
