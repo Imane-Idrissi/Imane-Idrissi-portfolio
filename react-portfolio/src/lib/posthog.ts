@@ -6,7 +6,7 @@ if (typeof window !== 'undefined') {
       api_host: 'https://eu.i.posthog.com',
       person_profiles: 'identified_only',
       autocapture: true,
-      capture_pageview: true
+      capture_pageview: false
     });
   } catch (error) {
     console.error('PostHog initialization error:', error);
