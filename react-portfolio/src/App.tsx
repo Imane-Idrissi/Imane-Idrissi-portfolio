@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { Home } from './pages/Home';
 import { Projects } from './pages/Projects';
-import { CollabAppDocs } from './pages/CollabAppDocs';
-import posthog from './lib/posthog';
-import { StyleAppDocs } from './pages/StyleAppDocs';
+import { UnblurryCaseStudy } from './pages/UnblurryCaseStudy';
 import { NotFound } from './pages/NotFound';
+import { BlogPost } from './pages/BlogPost';
+import { CollabAppCaseStudy } from './pages/CollabAppCaseStudy';
+import posthog from './lib/posthog';
 import styled from 'styled-components';
-
-// PostHog is imported and initialized in lib/posthog.ts
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -26,48 +25,30 @@ const MainContent = styled.main`
 
 function ScrollToTop() {
   const location = useLocation();
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    // Track page navigation with meaningful names
-    const pageNames: Record<string, string> = {
-      '/': 'homepage_viewed',
-      '/projects': 'projects_page_viewed', 
-      '/projects/collab-app': 'collab_project_viewed',
-      '/projects/e-commerce': 'ecommerce_project_viewed'
-    };
-    
-    const eventName = pageNames[location.pathname] || 'unknown_page_viewed';
-    
-    posthog.capture(eventName, {
+
+    posthog.capture('page_viewed', {
       path: location.pathname,
       page_title: document.title,
       referrer: document.referrer
     });
   }, [location]);
-  
+
   return null;
 }
 
 function App() {
-  
+
   useEffect(() => {
-    // Track portfolio app initialization
     posthog.capture('portfolio_loaded', {
       timestamp: new Date().toISOString(),
       page: 'app_start'
     });
-    
+
     window.history.scrollRestoration = 'manual';
-    
-    // Force scroll to top on page load/refresh
-    const scrollToTop = () => window.scrollTo(0, 0);
-    scrollToTop();
-    
-    // Also scroll to top after a short delay to override browser scroll restoration
-    setTimeout(scrollToTop, 0);
-    setTimeout(scrollToTop, 100);
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -84,8 +65,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/collab-app" element={<CollabAppDocs />} />
-              <Route path="/projects/e-commerce" element={<StyleAppDocs />} />
+              <Route path="/projects/unblurry" element={<UnblurryCaseStudy />} />
+              <Route path="/projects/collab-app" element={<CollabAppCaseStudy />} />
+              <Route path="/blog" element={<Navigate to="/blog/how-i-think-when-building-products" replace />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </MainContent>

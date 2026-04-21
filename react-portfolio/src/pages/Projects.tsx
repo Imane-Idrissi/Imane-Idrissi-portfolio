@@ -1,208 +1,191 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/common/Button';
-import { ImageModal } from '../components/common/ImageModal';
+import { Link } from 'react-router-dom';
 import { getAssetPath } from '../utils/assetPath';
 
-const ProjectsContainer = styled.div`
-  min-height: calc(100vh - 70px);
-  padding: ${({ theme }) => theme.spacing.md} 0;
-`;
-
-const ProjectsContent = styled.div`
-  max-width: 1200px;
+const Page = styled.div`
+  max-width: 900px;
   margin: 0 auto;
-  padding: 0 ${({ theme }) => theme.spacing.md};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    padding: 0 ${({ theme }) => theme.spacing.sm};
-  }
-`;
-
-const PageTitle = styled.h1`
-  font-size: 3rem;
-  text-align: center;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
-  color: ${({ theme }) => theme.colors.text};
+  padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.md};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: 2.5rem;
+    padding: ${({ theme }) => theme.spacing.xl} ${({ theme }) => theme.spacing.sm};
   }
 `;
 
-const ProjectGrid = styled.div`
-  display: grid;
+const Title = styled.h1`
+  font-size: 2rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 1.5rem;
+  }
+`;
+
+const ProjectsGrid = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing.xl};
-  max-width: 1100px;
-  margin: 0 auto;
 `;
 
 const ProjectCard = styled.div`
-  background-color: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
-  padding: ${({ theme }) => theme.spacing.lg};
-  border: 3px solid ${({ theme }) => theme.colors.primary};
-  transition: all 0.3s ease;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px ${({ theme }) => theme.colors.shadow};
+    box-shadow: 0 4px 20px ${({ theme }) => theme.colors.shadow};
   }
 `;
 
 const ProjectImage = styled.div`
-  position: relative;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
+  width: 100%;
+  height: 360px;
   overflow: hidden;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
-  box-shadow: 0 4px 12px ${({ theme }) => theme.colors.shadow};
-  height: 350px;
+  background-color: ${({ theme }) => theme.colors.surface};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center;
-    display: block;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    height: 180px;
   }
 `;
 
-const ProjectContent = styled.div`
-  text-align: center;
+const ProjectBody = styled.div`
+  padding: ${({ theme }) => theme.spacing.lg};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: ${({ theme }) => theme.spacing.md};
+  }
 `;
 
 const ProjectTitle = styled.h2`
-  font-size: 2rem;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  font-size: 1.5rem;
+  font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
+  margin-bottom: ${({ theme }) => theme.spacing.xs};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 1.25rem;
+  }
+`;
+
+const ProjectTag = styled.span`
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 2px 10px;
+  border-radius: 100px;
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
 `;
 
 const ProjectDescription = styled.p`
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: ${({ theme }) => theme.colors.textSecondary};
-  line-height: 1.6;
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  text-align: justify;
+  line-height: 1.7;
+  margin-bottom: ${({ theme }) => theme.spacing.md};
 `;
 
+const ProjectButton = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 24px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  transition: background-color 0.2s ease;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.md};
-  justify-content: center;
-  flex-wrap: wrap;
-  width: 100%;
-  
-  button {
-    flex: 1;
-    width: 100%;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryHover};
+  }
+`;
+
+const ProjectLink = styled.a`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
   }
 `;
 
 export const Projects: React.FC = () => {
-  const navigate = useNavigate();
-  const [modalImage, setModalImage] = useState<{ src: string; alt: string } | null>(null);
-  
   return (
-    <ProjectsContainer>
-      <ProjectsContent>
-        <PageTitle>My Projects</PageTitle>
-        
-        <ProjectGrid>
-          <ProjectCard>
-            <ProjectContent>
-              <ProjectTitle>CollabApp</ProjectTitle>
-            </ProjectContent>
-            <ProjectImage>
-              <img 
-                src={getAssetPath('/assets/projects/collab-app/home.webp')} 
-                alt="CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat"
-                loading="lazy"
-                onClick={() => setModalImage({
-                  src: getAssetPath('/assets/projects/collab-app/home.webp'),
-                  alt: "CollabApp - Real-time collaboration platform with Kanban board and AI-powered chat"
-                })}
-              />
-            </ProjectImage>
-            <ProjectContent>
-              <ProjectDescription>
-                A collaborative platform that combines a Kanban board with a chat app. 
-                What makes it different is an AI feature that turns group conversations 
-                into actionable tasks that are registered within the task board.
-              </ProjectDescription>
-              <ButtonGroup>
-                <Button 
-                  variant="primary" 
-                  size="lg"
-                  onClick={() => navigate('/projects/collab-app?goto=overview')}
-                >
-                  View Project →
-                </Button>
-                <Button 
-                  variant="secondary" 
-                  size="lg"
-                  onClick={() => window.open('https://github.com/Imane-Idrissi/collab-app', '_blank')}
-                >
-                  GitHub →
-                </Button>
-              </ButtonGroup>
-            </ProjectContent>
-          </ProjectCard>
+    <Page>
+      <Title>Projects</Title>
+      <ProjectsGrid>
+        <ProjectCard>
+          <ProjectImage>
+            <img
+              src={getAssetPath('/assets/projects/unblurry/hero.png')}
+              alt="Unblurry - Did your work match your intent?"
+              loading="lazy"
+            />
+          </ProjectImage>
+          <ProjectBody>
+            <ProjectTag>Desktop App</ProjectTag>
+            <ProjectTitle>Unblurry</ProjectTitle>
+            <ProjectDescription>
+              A privacy-focused desktop app that helps you understand your work behavior.
+              It silently captures what you do, collects how you feel, and uses AI to reveal
+              the behavioral patterns behind your productivity. Built with Electron, React,
+              SQLite, and Google Gemini.
+            </ProjectDescription>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <ProjectButton to="/projects/unblurry">
+                See project
+              </ProjectButton>
+              <ProjectLink href="https://www.unblurry.app/" target="_blank" rel="noopener noreferrer">
+                https://unblurry.app
+              </ProjectLink>
+            </div>
+          </ProjectBody>
+        </ProjectCard>
 
-          <ProjectCard>
-            <ProjectContent>
-              <ProjectTitle>Style App</ProjectTitle>
-            </ProjectContent>
-            <ProjectImage>
-              <img 
-                src={getAssetPath('/assets/projects/e-commerce/home.webp')} 
-                alt="Style App - Modern e-commerce platform with Stripe payments and inventory management"
-                loading="lazy"
-                onClick={() => setModalImage({
-                  src: getAssetPath('/assets/projects/e-commerce/home.webp'),
-                  alt: "Style App - Modern e-commerce platform with Stripe payments and inventory management"
-                })}
-              />
-            </ProjectImage>
-            <ProjectContent>
-              <ProjectDescription>
-                An online store where users can browse women's, men's, and kids' categories 
-                with subcategories. Shoppers can select items with the right size and quantity, 
-                add them to the cart, and complete their purchase through Stripe payments.
-              </ProjectDescription>
-              <ButtonGroup>
-                <Button 
-                  variant="primary" 
-                  size="lg"
-                  onClick={() => {
-                    navigate('/projects/e-commerce');
-                    setTimeout(() => window.scrollTo(0, 0), 100);
-                  }}
-                >
-                  View Project →
-                </Button>
-                <Button 
-                  variant="secondary" 
-                  size="lg"
-                  onClick={() => window.open('https://github.com/Imane-Idrissi/Style-e-commerce-app', '_blank')}
-                >
-                  GitHub →
-                </Button>
-              </ButtonGroup>
-            </ProjectContent>
-          </ProjectCard>
-        </ProjectGrid>
-      </ProjectsContent>
-      
-      {modalImage && (
-        <ImageModal
-          src={modalImage.src}
-          alt={modalImage.alt}
-          isOpen={!!modalImage}
-          onClose={() => setModalImage(null)}
-        />
-      )}
-    </ProjectsContainer>
+        <ProjectCard>
+          <ProjectImage>
+            <img
+              src={getAssetPath('/assets/projects/collab-app/hero.png')}
+              alt="CollabApp - Talk First, Organize Later"
+              loading="lazy"
+            />
+          </ProjectImage>
+          <ProjectBody>
+            <ProjectTag>Web App</ProjectTag>
+            <ProjectTitle>CollabApp</ProjectTitle>
+            <ProjectDescription>
+              A team collaboration tool where messy discussions become organized tasks.
+              Teams discuss freely without worrying about structure. When the conversation
+              is done, AI reads it and drafts the tasks. You review, adjust, and add them
+              to your board. Built with React, Django, PostgreSQL, and WebSockets.
+            </ProjectDescription>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <ProjectButton to="/projects/collab-app">
+                See project
+              </ProjectButton>
+              <ProjectLink href="https://collabapp-rho.vercel.app/" target="_blank" rel="noopener noreferrer">
+                collabapp-rho.vercel.app
+              </ProjectLink>
+            </div>
+          </ProjectBody>
+        </ProjectCard>
+      </ProjectsGrid>
+    </Page>
   );
 };
